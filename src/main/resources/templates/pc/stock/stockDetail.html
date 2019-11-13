@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>进货记录详情</title>
+    <link rel="stylesheet" href="../src/css/layui.css" th:href="@{/layui/css/layui.css}">
+</head>
+<body>
+<div style="margin: 2%;">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            进货商品详情:
+            <table class="layui-table">
+                <colgroup>
+                    <col width="100">
+                    <col width="150">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>品牌</th>
+                        <th>名称</th>
+                        <th>级别</th>
+                        <th>型号</th>
+                        <th>规格</th>
+                        <th>数量</th>
+                        <th>单价</th>
+                        <th>总价</th>
+                    </tr>
+                </thead>
+                <tbody th:each="detailStock:${detailStock}">
+                    <tr>
+                        <td th:text="${detailStock.brand_name}"></td>
+                        <td th:text="${detailStock.goods_name}"></td>
+                        <td th:text="${detailStock.level_name}"></td>
+                        <td th:text="${detailStock.model_name}"></td>
+                        <td th:text="${detailStock.guige_name}"></td>
+                        <td th:text="${detailStock.buy_count}"></td>
+                        <td th:text="${detailStock.price}"></td>
+                        <td th:text="${detailStock.total_price}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            进货订单详情:
+            <table class="layui-table">
+                <colgroup>
+                    <col width="200">
+                    <col width="150">
+                    <col width="150">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>存放仓库</th>
+                    <th>进货总价</th>
+                    <th>进货时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td th:text="${stock.repo_name}"></td>
+                    <td th:text="${stock.money}"></td>
+                    <td th:text="${stock.stock_date}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/jquery/jquery-3.4.1.min.js}"></script>
+<script src="../src/layui.js" th:src="@{/layui/layui.all.js}" ></script>
+</body>
+</html>

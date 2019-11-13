@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msy.dao.ClientDao">
+
+	<select id="listClient" parameterType="com.msy.entity.TableModel" resultType="com.msy.entity.Client" useCache="false">
+		select * from client
+		<where>
+			<if test="data.name != null and data.name != ''">
+				name like '%${data.name}%'
+			</if>
+			<if test="data.sex != null and data.sex != ''">
+				and name = #{data.sex}
+			</if>
+			<if test="data.telephone1 != null and data.telephone1 != ''">
+				and telephone1 like '%${data.telephone1}%'
+			</if>
+			<if test="data.store_name != null and data.store_name != ''">
+				and	store_name like '%${data.store_name}%'
+			</if>
+			<if test="data.address != null and data.address != ''">
+				and address like '%${data.address}%'
+			</if>
+			<if test="data.level != null and data.level != ''">
+				and level = #{data.level}
+			</if>
+			<if test="data.province != null and data.province != ''">
+				and province = #{data.province}
+			</if>
+			<if test="data.city != null and data.city != ''">
+				and city = #{data.city}
+			</if>
+			<if test="data.district != null and data.district != ''">
+				and district = #{data.district}
+			</if>
+		</where>
+			order by ${field} ${order} limit ${page},${limit}
+	</select>
+
+	<select id="listClientCount" parameterType="com.msy.entity.TableModel" resultType="java.lang.Long" useCache="false">
+		select count(*) from client
+		<where>
+			<if test="data.name != null and data.name != ''">
+				name like '%${data.name}%'
+			</if>
+			<if test="data.sex != null and data.sex != ''">
+				and name = #{data.sex}
+			</if>
+			<if test="data.telephone1 != null and data.telephone1 != ''">
+				and telephone1 like '%${data.telephone1}%'
+			</if>
+			<if test="data.store_name != null and data.store_name != ''">
+				and	store_name like '%${data.store_name}%'
+			</if>
+			<if test="data.address != null and data.address != ''">
+				and address like '%${data.address}%'
+			</if>
+			<if test="data.level != null and data.level != ''">
+				and level = #{data.level}
+			</if>
+			<if test="data.province != null and data.province != ''">
+				and province = #{data.province}
+			</if>
+			<if test="data.city != null and data.city != ''">
+				and city = #{data.city}
+			</if>
+			<if test="data.district != null and data.district != ''">
+				and district = #{data.district}
+			</if>
+		</where>
+	</select>
+
+</mapper>

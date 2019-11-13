@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>还款记录</title>
+    <link rel="stylesheet" href="../src/css/layui.css" th:href="@{/layui/css/layui.css}">
+</head>
+<body>
+<div style="margin: 2%;">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th>还款记录ID</th>
+                        <th>订单ID</th>
+                        <th>还款金额</th>
+                        <th>还款方式</th>
+                        <th>还款时间</th>
+                    </tr>
+                </thead>
+                <tbody th:each="arrearsLog:${arrearsLog}">
+                    <tr>
+                        <td th:text="${arrearsLog.id}"></td>
+                        <td th:text="${arrearsLog.order_id}"></td>
+                        <td th:text="${arrearsLog.arrears_money}"></td>
+                        <td th:text="${arrearsLog.pay_type}"></td>
+                        <td th:text="${arrearsLog.arrears_date}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="../src/layui.js" th:src="@{/layui/layui.all.js}" ></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>品牌</title>
+    <link rel="stylesheet" href="../src/css/layui.css" th:href="@{/layui/css/layui.css}">
+</head>
+<body>
+
+<div class="layui-card-header">品牌列表</div>
+
+<div class="layui-card-body">
+    <table class="layui-table">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+        </colgroup>
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>品牌名称</th>
+            <th>负责人</th>
+            <th>联系电话</th>
+            <th>厂家地址</th>
+            <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody th:each="brand:${brandList}">
+        <tr>
+            <td th:text="${brand.id}"></td>
+            <td th:text="${brand.name}"></td>
+            <td th:text="${brand.person_in_charge}"></td>
+            <td th:text="${brand.telephone}"></td>
+            <td th:text="${brand.address}"></td>
+            <td th:text="${brand.create_date}"></td>
+            <td><a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="../src/layui.js" th:src="@{/layui/layui.all.js}" ></script>
+</body>
+</html>

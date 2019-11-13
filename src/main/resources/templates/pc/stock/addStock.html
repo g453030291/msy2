@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>添加进货记录</title>
+    <link rel="stylesheet" href="../src/css/layui.css" th:href="@{/layui/css/layui.css}">
+</head>
+<body>
+
+<form class="layui-form" action="">
+    <div style="margin: 2%;">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <input type="hidden" id="stock_id">
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>进货商品详情</legend>
+                </fieldset>
+                <p style="text-align: right">进货总价<strong id="total_price">00.00</strong>元</p>
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="100">
+                        <col width="150">
+                        <col width="100">
+                        <col width="100">
+                        <col width="100">
+                        <col width="100">
+                        <col width="100">
+                        <col width="100">
+                        <col width="100">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>品牌</th>
+                        <th>名称</th>
+                        <th>级别</th>
+                        <th>型号</th>
+                        <th>规格</th>
+                        <th>数量</th>
+                        <th>单价</th>
+                        <th>总价</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend>选择商品</legend>
+        </fieldset>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">品牌</label>
+                <div class="layui-input-block">
+                    <select name="brand_name" id="brand_name" lay-filter="brand_name">
+                        <option value=""></option>
+                        <option th:each="brands:${brands}" th:value="${brands.name}" th:text="${brands.name}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">级别</label>
+                <div class="layui-input-block">
+                    <select name="level_name" id="level_name" lay-filter="level_name">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">型号</label>
+                <div class="layui-input-block">
+                    <select name="model_name" id="model_name" lay-filter="model_name">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">规格</label>
+                <div class="layui-input-block">
+                    <select name="guige_name" id="guige_name" lay-filter="guige_name">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend>选择存放仓库</legend>
+        </fieldset>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">仓库</label>
+                <div class="layui-input-block">
+                    <select name="repo" id="repo" lay-filter="repo">
+                        <option value=""></option>
+                        <option th:each="repos:${repos}" th:value="${repos.name}" th:text="${repos.name}"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend>填写进货详情</legend>
+        </fieldset>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">数量</label>
+                <div class="layui-input-inline">
+                    <input name="buy_count" id="buy_count" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">单价</label>
+                <div class="layui-input-inline">
+                    <input name="price" id="price" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">总价</label>
+                <div class="layui-input-inline">
+                    <input name="total_price" id="total_price" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">进货时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="stock_date" placeholder="yyyy-MM-dd HH:mm:ss">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: center">
+        <button type="button" class="layui-btn" onclick="addTable()">
+            <i class="layui-icon">&#xe608;</i> 添加
+        </button>
+    </div>
+
+
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="form-add" id="form-add" value="确定添加"/>
+    </div>
+</form>
+<script type="text/javascript" th:src="@{/jquery/jquery-3.4.1.min.js}"></script>
+<script src="../src/layui.js" th:src="@{/layui/layui.all.js}" ></script>
+<script>
+    ;!function(){
+        var form = layui.form
+            ,$ = layui.$
+            ,layer = layui.layer
+            ,laydate = layui.laydate;
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+
+
+        form.on('select(brand_name)', function(data){
+            $.ajax({
+                type: "get",
+                data: {
+                    brand_name: data.value
+                },
+                url: "[[@{/}]]"+"pc/stock/findLevelByBrand.json",
+                success: function (result) {
+                    $("#level_name").empty();
+                    $("#model_name").empty();
+                    $("#guige_name").empty();
+                    $("#level_name").append("<option value=''>请选择</option>");
+                    for(var i = 0;i < result.length;i++){
+                        $("#level_name").append("<option value='"+result[i]+"'>"+result[i]+"</option>");
+                    }
+                    form.render();
+                }
+            });
+        });
+
+        form.on('select(level_name)', function(data){
+            var brand_name = $("#brand_name").val();
+            $.ajax({
+                type: "get",
+                data: {
+                    brand_name: brand_name,
+                    level_name: data.value
+                },
+                url: "[[@{/}]]"+"pc/stock/findModelBybl.json",
+                success: function (result) {
+                    $("#model_name").empty();
+                    $("#guige_name").empty();
+                    $("#model_name").append("<option value=''>请选择</option>");
+                    for(var i = 0;i < result.length;i++){
+                        $("#model_name").append("<option value='"+result[i]+"'>"+result[i]+"</option>");
+                    }
+                    form.render();
+                }
+            });
+        });
+
+        form.on('select(model_name)', function(data){
+            var brand_name = $("#brand_name").val();
+            var level_name = $("#level_name").val();
+            $.ajax({
+                type: "get",
+                data: {
+                    brand_name: brand_name,
+                    level_name: level_name,
+                    model_name: data.value
+                },
+                url: "[[@{/}]]"+"pc/stock/findGuigeByblm.json",
+                success: function (result) {
+                    $("#guige_name").empty();
+                    $("#guige_name").append("<option value=''>请选择</option>");
+                    for(var i = 0;i < result.length;i++){
+                        $("#guige_name").append("<option value='"+result[i]+"'>"+result[i]+"</option>");
+                    }
+                    form.render();
+                }
+            });
+        });
+
+        laydate.render({
+            elem: "#stock_date"
+            ,type: 'datetime'
+        });
+
+        //监听提交
+        form.on('submit(form-add)', function(data){
+            //var field = data.field; //获取提交的字段
+            $.ajax({
+                type: "post",
+                data: $("form").serialize(),
+                url: "[[@{/}]]"+"pc/brand/addGuige.form",
+                success: function(result){
+                    if(isNaN(result)){
+                        layer.msg("规格名称重复");
+                    }
+                    if(result > 0){//数据提交成功,关闭layer
+                        //layer.msg("添加成功");
+                        parent.layui.table.reload('table'); //重载表格
+                        parent.layer.close(index); //再执行关闭
+                        parent.layer.msg("添加成功");
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+            return false;
+        });
+    }();
+
+    function addTable(){
+        var brand_name = $("#brand_name").val();
+        var level_name = $("#level_name").val();
+        var model_name = $("#model_name").val();
+        var guige_name = $("#guige_name").val();
+        var buy_count = $("#buy_count").val();
+        var price = $("#price").val();
+        var repo = $("#repo").val();
+        var total_price = $("#total_price").val();
+        var stock_id = $("#stock_id").val();
+        var stock_date = $("#stock_date").val();
+        $.ajax({
+            type: "post",
+            data: {
+                brand_name: brand_name,
+                level_name: level_name,
+                model_name: model_name,
+                guige_name: guige_name,
+                repo: repo,
+                buy_count: buy_count,
+                price: price,
+                total_price: total_price,
+                stock_id: stock_id,
+                stock_date: stock_date
+            },
+            url: "[[@{/}]]"+"pc/stock/findGoodsByblmg.json",
+            success: function (result) {
+                $("#tbody").append("<tr><td>"+result.goods.brand_name+"</td><td>"+result.goods.goods_name+"</td><td>"+result.goods.level_name+"</td><td>"+result.goods.model_name+"</td><td>"+result.goods.guige_name+"</td><td>"+buy_count+"</td><td>"+price+"</td><td>"+buy_count*price+"</td><td><button type=\"button\" class=\"layui-btn\" onclick=\"delTable()\"><i class=\"layui-icon\">&#xe640;</i>删除</button></td></tr>");
+                $("#total_price").html(result.total_price);
+                $("#stock_id").val(result.stockId);
+            }
+        });
+    }
+
+    function delTable() {
+
+    }
+</script>
+</body>
+</html>

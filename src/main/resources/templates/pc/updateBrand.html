@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>添加\修改品牌</title>
+    <link rel="stylesheet" href="../src/css/layui.css" th:href="@{/layui/css/layui.css}">
+</head>
+<body>
+
+<form class="layui-form" action="">
+    <input type="hidden" name="id" th:value="${brand.id}">
+    <div style="margin: 2%;">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">品牌名称</label>
+                <div class="layui-input-inline">
+                    <input name="name" autocomplete="off" class="layui-input" lay-verify="required" th:value="${brand.name}">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">厂家负责人</label>
+                <div class="layui-input-inline">
+                    <input name="person_in_charge" autocomplete="off" class="layui-input" lay-verify="required" th:value="${brand.person_in_charge}">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">联系方式</label>
+                <div class="layui-input-inline">
+                    <input name="telephone" autocomplete="off" class="layui-input" lay-verify="required|number" th:value="${brand.telephone}">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">详细地址</label>
+            <div class="layui-input-block">
+                <input name="address" autocomplete="off" class="layui-input" lay-verify="required" th:value="${brand.address}">
+            </div>
+        </div>
+
+        <!--<div class="layui-form-item">-->
+            <!--<div>-->
+                <!--<div class="layui-card-header">级别</div>-->
+                <!--<div class="layui-card-body">-->
+                    <!--<table class="layui-table">-->
+                        <!--<colgroup>-->
+                            <!--<col width="50">-->
+                            <!--<col width="50">-->
+                            <!--<col>-->
+                        <!--</colgroup>-->
+                        <!--<thead>-->
+                            <!--<tr>-->
+                                <!--<th>id</th>-->
+                                <!--<th>级别</th>-->
+                                <!--&lt;!&ndash;<th>操作</th>&ndash;&gt;-->
+                            <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody th:each="levels:${levels}">-->
+                            <!--<tr>-->
+                                <!--<td th:text="${levels.id}"></td>-->
+                                <!--<td th:text="${levels.level_name}"></td>-->
+                                <!--&lt;!&ndash;<td><a class="layui-btn layui-btn-danger layui-btn-xs" th:href="|javascript:dellevel(${levels.id})|">删除</a></td>&ndash;&gt;-->
+                            <!--</tr>-->
+                        <!--</tbody>-->
+                    <!--</table>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div>-->
+                <!--<div class="layui-card-header">规格</div>-->
+                <!--<div class="layui-card-body">-->
+                    <!--<table class="layui-table">-->
+                        <!--<colgroup>-->
+                            <!--<col width="50">-->
+                            <!--<col width="50">-->
+                            <!--<col>-->
+                        <!--</colgroup>-->
+                        <!--<thead>-->
+                            <!--<tr>-->
+                                <!--<th>id</th>-->
+                                <!--<th>规格</th>-->
+                                <!--&lt;!&ndash;<th>操作</th>&ndash;&gt;-->
+                            <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody th:each="guiges:${guiges}">-->
+                            <!--<tr>-->
+                                <!--<td th:text="${guiges.id}"></td>-->
+                                <!--<td th:text="${guiges.guige_name}"></td>-->
+                                <!--&lt;!&ndash;<td><a class="layui-btn layui-btn-danger layui-btn-xs" th:href="|javascript:delguige(${guiges.id})|">删除</a></td>&ndash;&gt;-->
+                            <!--</tr>-->
+                        <!--</tbody>-->
+                    <!--</table>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="form-add" id="form-add" value="确定添加"/>
+        <input type="button" lay-submit lay-filter="form-update" id="form-update" value="确定编辑"/>
+    </div>
+</form>
+
+<script type="text/javascript" th:src="@{/jquery/jquery-3.4.1.min.js}"></script>
+<script src="../src/layui.js" th:src="@{/layui/layui.all.js}" ></script>
+<script>
+    var index1 = null;
+    ;!function(){
+        var contentPath = "[[@{/}]]";
+        var form = layui.form
+            ,$ = layui.$
+            ,layer = layui.layer;
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        index1 = index;
+        //监听提交
+        form.on('submit(form-add)', function(data){
+            //var field = data.field; //获取提交的字段
+            $.ajax({
+                type: "post",
+                data: $("form").serialize(),
+                url: "[[@{/}]]"+"pc/brand/addBrand.form",
+                success: function(result){
+                    if(result > 0){//数据提交成功,关闭layer
+                        //layer.msg("添加成功");
+                        parent.layui.table.reload('table'); //重载表格
+                        parent.layer.close(index); //再执行关闭
+                        parent.layer.msg("添加成功");
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+
+                }
+            });
+            return false;
+        });
+        form.on('submit(form-update)', function(data){
+            $.ajax({
+                type: "post",
+                data: $("form").serialize(),
+                url: "[[@{/}]]"+"pc/brand/updateBrand.form",
+                success: function(result){
+                    if(result > 0){//数据提交成功,关闭layer
+                        parent.layui.table.reload('table'); //重载表格
+                        parent.layer.close(index); //再执行关闭
+                        parent.layer.msg("修改成功");
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+            return false;
+        });
+    }();
+
+    // function dellevel(id) {
+    //     $.ajax({
+    //         type: "post",
+    //         data: {"id":id},
+    //         url: "[[@{/}]]"+"pc/brand/delLevel.json",
+    //         success: function(result){
+    //             if(result > 0){//数据提交成功,关闭layer
+    //                 parent.layui.table.reload('table'); //重载表格
+    //                 parent.layer.close(index1); //再执行关闭
+    //                 parent.layer.msg("删除成功");
+    //             }
+    //         },
+    //         error: function (result) {
+    //             console.log(result);
+    //         }
+    //     });
+    // }
+    //
+    // function delguige(id) {
+    //     alert(id);
+    // }
+
+</script>
+</body>
+</html>

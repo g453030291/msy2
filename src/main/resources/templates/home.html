@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>首页</title>
+    <link rel="stylesheet" href="../src/css/layui.css" th:href="@{/layui/css/layui.css}">
+</head>
+<body>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+    <legend>欢迎登陆</legend>
+</fieldset>
+
+<blockquote class="layui-elem-quote">催款清单</blockquote>
+
+<table class="layui-table">
+    <colgroup>
+        <col width="150">
+        <col width="200">
+        <col>
+    </colgroup>
+    <thead>
+    <tr>
+        <th>订单ID</th>
+        <th>姓名</th>
+        <th>手机号</th>
+        <th>送货人</th>
+        <th>应收款</th>
+        <th>欠款金额</th>
+        <th>催款时间</th>
+    </tr>
+    </thead>
+    <tbody th:each="orders:${orders}">
+    <tr>
+        <td th:text="${orders.id}"></td>
+        <td th:text="${orders.client_name}"></td>
+        <td th:text="${orders.telephone}"></td>
+        <td th:text="${orders.send_name}"></td>
+        <td th:text="${orders.money}"></td>
+        <td th:text="${orders.arrears_money}"></td>
+        <td th:text="${orders.is_arrears}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<script src="../src/layui.js" th:src="@{/layui/layui.all.js}" ></script>
+</body>
+</html>

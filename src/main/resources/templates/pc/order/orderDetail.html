@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>订单详情</title>
+    <link rel="stylesheet" href="../src/css/layui.css" th:href="@{/layui/css/layui.css}">
+</head>
+<body>
+<div style="margin: 2%;">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            商品详情:
+            <table class="layui-table">
+                <colgroup>
+                    <col width="100">
+                    <col width="150">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>品牌</th>
+                    <th>名称</th>
+                    <th>级别</th>
+                    <th>型号</th>
+                    <th>规格</th>
+                    <th>数量</th>
+                    <th>单价</th>
+                    <th>总价</th>
+                </tr>
+                </thead>
+                <tbody th:each="orderGoods:${orderGoods}">
+                    <tr>
+                        <td th:text="${orderGoods.brand_name}"></td>
+                        <td th:text="${orderGoods.goods_name}"></td>
+                        <td th:text="${orderGoods.level_name}"></td>
+                        <td th:text="${orderGoods.model_name}"></td>
+                        <td th:text="${orderGoods.guige_name}"></td>
+                        <td th:text="${orderGoods.buy_count}"></td>
+                        <td th:text="${orderGoods.goods_price}"></td>
+                        <td th:text="${orderGoods.total_money}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            订单详情:
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th>用户手机号</th>
+                        <th>订单金额</th>
+                        <th>支付方式</th>
+                        <th>支付状态</th>
+                        <th>下单时间</th>
+                        <th>支付时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:text="${order.telephone}"></td>
+                        <td th:text="${order.money}"></td>
+                        <td th:text="${order.pay_type}"></td>
+                        <td th:text="${order.pay_state}"></td>
+                        <td th:text="${order2.order_date}"></td>
+                        <td th:text="${order2.pay_date}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            送货详情:
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th>送货人</th>
+                        <th>到货时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:text="${order.send_name}"></td>
+                        <td th:text="${order2.send_date}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="layui-inline">
+            欠款详情:
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>是否欠款</th>
+                    <th>欠款金额</th>
+                    <th>催款时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td th:text="${order.is_arrears}"></td>
+                    <td th:text="${order.arrears_money}"></td>
+                    <td th:text="${order2.arrears_date}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="../src/layui.js" th:src="@{/layui/layui.all.js}" ></script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>添加/修改员工</title>
+    <link rel="stylesheet" href="../src/css/layui.css" th:href="@{/layui/css/layui.css}">
+</head>
+<body>
+
+<form class="layui-form" action="">
+    <div style="margin: 2%;">
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend>搜索员工微信</legend>
+        </fieldset>
+        <div class="layui-form-item">
+            <input type="hidden" id="client_id" name="client_id">
+            <div class="layui-inline">
+                <label class="layui-form-label">微信昵称</label>
+                <div class="layui-input-inline">
+                    <input id="nick_name" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <a style="color: blue" href="javascript:search()">搜索</a>
+            </div>
+
+            <div class="layui-inline">
+                <img id="headImg" src="" alt="被查询微信头像"/>
+            </div>
+        </div>
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend>填写基本信息</legend>
+        </fieldset>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-inline">
+                    <input id="name" name="name" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-inline">
+                    <select name="sex">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">年龄</label>
+                <div class="layui-input-inline">
+                    <input name="age" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">出生日期</label>
+                <div class="layui-input-inline">
+                    <input name="birthday" id="birthday" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">联系方式</label>
+                <div class="layui-input-inline">
+                    <input name="telephone" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">状态</label>
+                <div class="layui-input-inline">
+                    <select name="state">
+                        <option value="在职">在职</option>
+                        <option value="离职">离职</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">家庭住址</label>
+            <div class="layui-input-block">
+                <input name="address" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend>工作区域</legend>
+        </fieldset>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">城市</label>
+                <div class="layui-input-inline">
+                    <select name="work_city" id="work_city" lay-filter="city">
+
+                    </select>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="form-add" id="form-add" value="确定添加"/>
+        <input type="button" lay-submit lay-filter="form-update" id="form-update" value="确定编辑"/>
+    </div>
+</form>
+<script type="text/javascript" th:src="@{/jquery/jquery-3.4.1.min.js}"></script>
+<script src="../src/layui.js" th:src="@{/layui/layui.all.js}" ></script>
+<script>
+    ;!function(){
+        var contentPath = "[[@{/}]]";
+        var form = layui.form
+              ,$ = layui.$
+              ,laydate = layui.laydate;
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        $.getJSON("[[@{/}]]"+"json/shanxi.json",function (e) {
+            $("#work_city").append("<option value=''>请选择</option>");
+            for(var i=0;i<e.total;i++){
+                $("#work_city").append("<option value='"+e.rows[i].name+"'>"+e.rows[i].name+"</option>");
+            }
+            form.render();
+        });
+        //监听提交
+        form.on('submit(form-add)', function(data){
+            //var field = data.field; //获取提交的字段
+            $.ajax({
+                type: "post",
+                data: $("form").serialize(),
+                url: "[[@{/}]]"+"pc/staff/addStaff.form",
+                success: function(result){
+                    if(result > 0){//数据提交成功,关闭layer
+                        //layer.msg("添加成功");
+                        parent.layui.table.reload('table'); //重载表格
+                        parent.layer.close(index); //再执行关闭
+                        parent.layer.msg("添加成功",{icon: 1});
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+
+                }
+            });
+            return false;
+        });
+
+        laydate.render({
+            elem: '#birthday' //指定元素
+            ,trigger: 'click'
+        });
+    }();
+
+    function search() {
+        var nick_name = $("#nick_name").val();
+        $.ajax({
+            type: "post",
+            data: {
+                nick_name: nick_name
+            },
+            url: "[[@{/}]]"+"searchClientByNickName.json",
+            success: function(result){
+                if(result.length>=2){
+                    layer.msg("搜索结果不唯一,请输入全部昵称");
+                    return;
+                }
+                $("#client_id").val(result[0].id);
+                $("#headImg").attr("src",result[0].headimgurl);
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
+</script>
+</body>
+</html>

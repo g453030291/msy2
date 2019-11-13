@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>品牌列表</title>
+    <link rel="stylesheet" href="../src/css/layui.css" th:href="@{/layui/css/layui.css}">
+</head>
+<body class="layui-bg-gray">
+
+<div class="layui-fluid" style="padding: 15px">
+    <div class="layui-row layui-col-space15 layui-form">
+        <div class="layui-col-md12">
+            <div class="layui-card tableQuery">
+                <div class="layui-card-header">
+                    品牌列表
+                </div>
+                <div class="layui-card-body">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">品牌名称</label>
+                            <div class="layui-inline">
+                                <input class="layui-input" name="name" th:id="name" id="name" autocomplete="off">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="layui-btn-container" style="text-align: center">
+                                <button class="layui-btn" data-type="reload">查询</button>
+                                <button class="layui-btn layui-btn-primary" data-type="reset">重置</button>
+                            </div>
+                            <div style="padding-bottom: 10px">
+                                <button class="layui-btn" data-type="add">添加</button>
+                            </div>
+                            <table id="table" th:id="table" lay-filter="table-filter"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/html" th:id="toolBar">
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <!--<a class="layui-btn layui-btn-xs" lay-event="level">级别</a>-->
+            <!--<a class="layui-btn layui-btn-xs" lay-event="guige">规格</a>-->
+            <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+        </script>
+
+        <script src="../src/layui.js" th:src="@{/layui/layui.all.js}" ></script>
+        <script type="text/javascript">
+
+            ;!function(){
+                //时间戳的处理
+                layui.laytpl.toDateString = function(d, format){
+                    var date = new Date(d || new Date())
+                        ,ymd = [
+                        this.digit(date.getFullYear(), 4)
+                        ,this.digit(date.getMonth() + 1)
+                        ,this.digit(date.getDate())
+                    ]
+                        ,hms = [
+                        this.digit(date.getHours())
+                        ,this.digit(date.getMinutes())
+                        ,this.digit(date.getSeconds())
+                    ];
+
+                    format = format || 'yyyy-MM-dd HH:mm:ss';
+
+                    return format.replace(/yyyy/g, ymd[0])
+                        .replace(/MM/g, ymd[1])
+                        .replace(/dd/g, ymd[2])
+                        .replace(/HH/g, hms[0])
+                        .replace(/mm/g, hms[1])
+                        .replace(/ss/g, hms[2]);
+                };
+
+                //数字前置补零
+                layui.laytpl.digit = function(num, length, end){
+                    var str = '';
+                    num = String(num);
+                    length = length || 2;
+                    for(var i = num.length; i < length; i++){
+                        str += '0';
+                    }
+                    return num < Math.pow(10, length) ? str + (num|0) : num;
+                };
+
+                //无需再执行layui.use()方法加载模块，直接使用即可
+                var contentPath = "[[@{/}]]";
+                var form = layui.form
+                    ,layer = layui.layer
+                    ,table = layui.table;
+
+                table.render({
+                    elem: '#table'
+                    ,id: 'table'
+                    ,method: 'get'
+                    ,minWidth: 60 //局部定义当前常规单元格的最小宽度(默认:60)
+                    //,height: 'full-200' //高度最大化自适应
+                    ,limit: 10
+                    ,limits: [10]
+                    //,text: '服务端异常,请联系管理员'
+                    ,url: "[[@{/}]]"+'pc/brand/getBrandList.json'
+                    ,page: true
+                    ,cols: [
+                        [
+                            {field: 'checkbox', title: 'checkbox' , type: 'checkbox', fixed: 'left'}
+                            ,{field: 'id', title: 'ID', width:50 }
+                            ,{field: 'name', title: '商品名称'}
+                            ,{field: 'person_in_charge', title: '厂家联系人'}
+                            ,{field: 'telephone', title: '联系电话'}
+                            ,{field: 'address', title: '厂家地址'}
+                            ,{field: 'create_date', title: '创建时间', templet: '<div>{{ layui.laytpl.toDateString(d.create_date) }}</div>', sort: true}
+                            ,{field: 'toolBar', width:100, align:'center', toolbar: '#toolBar', fixed: 'right'}
+                            // ,{field: 'score', title: '评分', width: 80, sort: true}
+                            // ,{field: 'classify', title: '职业', width: 80}
+                            // ,{field: 'wealth', title: '财富', width: 135, sort: true}
+                        ]
+                    ]
+                    ,done: function(res, curr, count){
+                        //如果是异步请求数据方式，res即为你接口返回的信息。
+                        //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                        //console.log(res);
+
+                        //得到当前页码
+                        //console.log(curr);
+
+                        //得到数据总量
+                        //console.log(count);
+                    }
+                });
+
+                table.on('tool(table-filter)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                    var data = obj.data; //获得当前行数据
+                    var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                    var tr = obj.tr; //获得当前行 tr 的DOM对象
+                    //alert(data.id);
+                    //alert(layEvent);
+                    if(layEvent == 'edit'){
+                        layer.open({
+                            type: 2
+                            ,title: '编辑'
+                            ,content: "[[@{/}]]"+'pc/brand/toAddBrand.page?id='+data.id//这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                            ,maxmin: true
+                            ,scrollbar: false
+                            ,area: ['1100px','300px']
+                            ,btn: ['确定', '取消']
+                            ,yes: function(index, layero){
+                                //点击确认触发 iframe 内容中的按钮提交
+                                var submit = layero.find('iframe').contents().find("#form-update");
+                                submit.click();
+                            }
+                        });
+                    }
+                    // if(layEvent == 'level'){
+                    //     layer.open({
+                    //         type: 2
+                    //         ,title: '添加级别'
+                    //         ,content: "[[@{/}]]"+'pc/brand/toAddLevel.page?id='+data.id//这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                    //         ,maxmin: true
+                    //         ,scrollbar: false
+                    //         ,area: ['320px','200px']
+                    //         ,btn: ['确定', '取消']
+                    //         ,yes: function(index, layero){
+                    //             //点击确认触发 iframe 内容中的按钮提交
+                    //             var submit = layero.find('iframe').contents().find("#form-add");
+                    //             submit.click();
+                    //         }
+                    //     });
+                    // }
+                    // if(layEvent == 'guige'){
+                    //     layer.open({
+                    //         type: 2
+                    //         ,title: '添加规格'
+                    //         ,content: "[[@{/}]]"+'pc/brand/toAddGuige.page?id='+data.id//这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                    //         ,maxmin: true
+                    //         ,scrollbar: false
+                    //         ,area: ['320px','200px']
+                    //         ,btn: ['确定', '取消']
+                    //         ,yes: function(index, layero){
+                    //             //点击确认触发 iframe 内容中的按钮提交
+                    //             var submit = layero.find('iframe').contents().find("#form-add");
+                    //             submit.click();
+                    //         }
+                    //     });
+                    // }
+                    // if(layEvent == 'del'){
+                    //     layer.confirm('确认删除？', {
+                    //         btn: ['确认','取消'] //按钮
+                    //     }, function(){
+                    //         layer.msg('删除成功', {icon: 1});
+                    //         // }, function(){
+                    //         //     layer.msg('也可以这样', {
+                    //         //         time: 20000, //20s后自动关闭
+                    //         //         btn: ['明白了', '知道了']
+                    //         //     });
+                    //     });
+                    // }
+                });
+
+                var $ = layui.$, active = {
+                    reload: function(){
+                        var name = $('#name');
+
+                        //执行重载
+                        table.reload('table', {
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                            ,where: {
+                                name: name.val()
+                            }
+                        }, 'data');
+                    },
+                    reset: function(){
+                        var name = $('#name');
+
+                        name.val('');
+                        form.render('select');
+
+                        //执行重载
+                        table.reload('table', {
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                            ,where: {
+                                name: name.val()
+                            }
+                        }, 'data');
+                    },
+                    add: function(){
+                        layer.open({
+                            type: 2
+                            ,title: '添加品牌'
+                            ,content: ["[[@{/}]]"+'pc/brand/toAddBrand.page','no']
+                            ,maxmin: true
+                            ,scrollbar: false
+                            ,area: ['1100px','300px']
+                            ,btn: ['确定', '取消']
+                            ,yes: function(index, layero){
+                                //点击确认触发 iframe 内容中的按钮提交
+                                var submit = layero.find('iframe').contents().find("#form-add");
+                                submit.click();
+                            }
+                        });
+                    }
+                };
+
+                $('.tableQuery .layui-btn').on('click', function(){
+                    var type = $(this).data('type');
+                    active[type] ? active[type].call(this) : '';
+                });
+            }();
+        </script>
+
+</body>
+</html>

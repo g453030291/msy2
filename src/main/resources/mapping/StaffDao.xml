@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msy.dao.StaffDao">
+
+	<select id="listStaff" parameterType="com.msy.entity.TableModel" resultType="com.msy.entity.Staff" useCache="false">
+		select * from staff
+		<where>
+			<if test="data.name != null and data.name != ''">
+				name like '%${data.name}%'
+			</if>
+			<if test="data.telephone != null and data.telephone != ''">
+				and name like '%${data.telephone}%'
+			</if>
+		</where>
+			order by ${field} ${order} limit ${page},${limit}
+	</select>
+
+	<select id="staffCount" parameterType="com.msy.entity.TableModel" resultType="java.lang.Long" useCache="false">
+		select count(*) from staff
+		<where>
+			<if test="data.name != null and data.name != ''">
+				name like '%${data.name}%'
+			</if>
+			<if test="data.telephone != null and data.telephone != ''">
+				and name like '%${data.telephone}%'
+			</if>
+		</where>
+	</select>
+
+</mapper>

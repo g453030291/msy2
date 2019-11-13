@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>添加级别</title>
+    <link rel="stylesheet" href="../src/css/layui.css" th:href="@{/layui/css/layui.css}">
+</head>
+<body>
+
+<form class="layui-form" action="">
+    <div style="margin: 2%;">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="150">
+                        <col width="200">
+                        <col>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>级别名称</th>
+                    </tr>
+                    </thead>
+                    <tbody th:each="levles:${levles}">
+                    <tr>
+                        <td th:text="${levles.id}"></td>
+                        <td th:text="${levles.level_name}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">级别名称</label>
+                <div class="layui-input-inline">
+                    <input type="hidden" name="goods_id" th:value="${goodsid}">
+                    <input name="level_name" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="form-add" id="form-add" value="确定添加"/>
+    </div>
+</form>
+
+<script src="../src/layui.js" th:src="@{/layui/layui.all.js}" ></script>
+<script>
+    ;!function(){
+        var form = layui.form
+            ,$ = layui.$
+            ,layer = layui.layer;
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        //监听提交
+        form.on('submit(form-add)', function(data){
+            //var field = data.field; //获取提交的字段
+            $.ajax({
+                type: "post",
+                data: $("form").serialize(),
+                url: "[[@{/}]]"+"pc/brand/addLevel.form",
+                success: function(result){
+                    if(isNaN(result)){
+                        layer.msg("级别名称重复");
+                    }
+                    if(result > 0){//数据提交成功,关闭layer
+                        //layer.msg("添加成功");
+                        parent.layui.table.reload('table'); //重载表格
+                        parent.layer.close(index); //再执行关闭
+                        parent.layer.msg("添加成功");
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+            return false;
+        });
+    }();
+</script>
+</body>
+</html>

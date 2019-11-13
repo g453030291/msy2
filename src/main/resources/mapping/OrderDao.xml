@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msy.dao.OrderDao">
+
+	<select id="listOrder" parameterType="com.msy.entity.TableModel" resultType="com.msy.entity.Order" useCache="false">
+		select * from msy_order
+		<where>
+			<if test="data.client_name != null and data.client_name != ''">
+				client_name like '%${data.client_name}%'
+			</if>
+			<if test="data.telephone != null and data.telephone != ''">
+				telephone like '%${data.telephone}%'
+			</if>
+			<if test="data.pay_state != null and data.pay_state != ''">
+				pay_state = #{data.pay_state}
+			</if>
+			<if test="data.pay_type != null and data.pay_type != ''">
+				pay_type = #{data.pay_type}
+			</if>
+			<if test="query_date1 != null and query_date1 != ''">
+				create_date >= #{query_date1}
+			</if>
+			<if test="query_date2 != null and query_date2 != ''">
+				and create_date &lt;= #{query_date2}
+			</if>
+		</where>
+			order by ${field} ${order} limit ${page},${limit}
+	</select>
+
+	<select id="orderCount" parameterType="com.msy.entity.TableModel" resultType="java.lang.Long" useCache="false">
+		select count(*) from msy_order
+		<where>
+			<if test="data.client_name != null and data.client_name != ''">
+				client_name like '%${data.client_name}%'
+			</if>
+			<if test="data.telephone != null and data.telephone != ''">
+				telephone like '%${data.telephone}%'
+			</if>
+			<if test="data.pay_state != null and data.pay_state != ''">
+				pay_state = #{data.pay_state}
+			</if>
+			<if test="data.pay_type != null and data.pay_type != ''">
+				pay_type = #{data.pay_type}
+			</if>
+			<if test="query_date1 != null and query_date1 != ''">
+				create_date >= #{query_date1}
+			</if>
+			<if test="query_date2 != null and query_date2 != ''">
+				and create_date &lt;= #{query_date2}
+			</if>
+		</where>
+	</select>
+
+	<insert id="addOrderGoods" parameterType="java.util.ArrayList">
+		insert into order_goods(brand_name,goods_name,level_name,model_name,guige_name,order_id,goods_id,buy_count,goods_price,total_money,create_date) values
+		<foreach collection="list" item="og" separator=",">
+			(#{og.brand_name},#{og.goods_name},#{og.level_name},#{og.model_name},#{og.guige_name},#{og.order_id},#{og.goods_id},#{og.buy_count},#{og.goods_price},#{og.total_money},now())
+		</foreach>
+	</insert>
+
+</mapper>

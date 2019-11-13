@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>商品列表</title>
+    <link rel="stylesheet" href="../src/css/layui.css" th:href="@{/layui/css/layui.css}">
+</head>
+<body class="layui-bg-gray">
+
+<div class="layui-fluid" style="padding: 15px">
+    <div class="layui-row layui-col-space15 layui-form">
+        <div class="layui-col-md12">
+            <div class="layui-card tableQuery">
+                <div class="layui-card-header">
+                    商品列表
+                </div>
+                <div class="layui-card-body">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">商品名称</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" name="goods_name" th:id="goods_name" id="goods_name" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">油品类型</label>
+                            <div class="layui-input-inline">
+                                <select name="oil_type" id="oil_type">
+                                    <option value=""></option>
+                                    <option value="汽车用油">汽车用油</option>
+                                    <option value="工程机械油">工程机械油</option>
+                                    <option value="齿轮油">齿轮油</option>
+                                    <option value="防冻液">防冻液</option>
+                                    <option value="其它">其它</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">品牌</label>
+                            <div class="layui-input-block">
+                                <select name="brand_name" th:id="brand_name" id="brand_name">
+                                    <option value=""></option>
+                                    <option th:each="brands:${brands}" th:value="${brands.name}" th:text="${brands.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="layui-btn-container" style="text-align: center">
+                                <button class="layui-btn" data-type="reload">查询</button>
+                                <button class="layui-btn layui-btn-primary" data-type="reset">重置</button>
+                            </div>
+                            <div style="padding-bottom: 10px">
+                                <button class="layui-btn" data-type="add">添加</button>
+                            </div>
+                            <table id="table" th:id="table" lay-filter="table-filter"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" th:id="toolBar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    {{#  if(d.state == '下架'){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="upDown">上架</a>
+    {{#  } else { }}
+    <a class="layui-btn layui-btn-xs" lay-event="upDown">下架</a>
+    {{#  } }}
+    <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+</script>
+
+<script src="../src/layui.js" th:src="@{/layui/layui.all.js}" ></script>
+<script type="text/javascript">
+
+    ;!function(){
+        //时间戳的处理
+        layui.laytpl.toDateString = function(d, format){
+            var date = new Date(d || new Date())
+                ,ymd = [
+                this.digit(date.getFullYear(), 4)
+                ,this.digit(date.getMonth() + 1)
+                ,this.digit(date.getDate())
+            ]
+                ,hms = [
+                this.digit(date.getHours())
+                ,this.digit(date.getMinutes())
+                ,this.digit(date.getSeconds())
+            ];
+
+            format = format || 'yyyy-MM-dd HH:mm:ss';
+
+            return format.replace(/yyyy/g, ymd[0])
+                .replace(/MM/g, ymd[1])
+                .replace(/dd/g, ymd[2])
+                .replace(/HH/g, hms[0])
+                .replace(/mm/g, hms[1])
+                .replace(/ss/g, hms[2]);
+        };
+
+        //数字前置补零
+        layui.laytpl.digit = function(num, length, end){
+            var str = '';
+            num = String(num);
+            length = length || 2;
+            for(var i = num.length; i < length; i++){
+                str += '0';
+            }
+            return num < Math.pow(10, length) ? str + (num|0) : num;
+        };
+
+        //无需再执行layui.use()方法加载模块，直接使用即可
+        var contentPath = "[[@{/}]]";
+        var form = layui.form
+            ,layer = layui.layer
+            ,table = layui.table;
+
+        table.render({
+            elem: '#table'
+            ,id: 'table'
+            ,method: 'get'
+            ,minWidth: 60 //局部定义当前常规单元格的最小宽度(默认:60)
+            //,height: 'full-200' //高度最大化自适应
+            ,limit: 10
+            ,limits: [10]
+            ,loading: true
+            ,autoSort: false //禁用前端自动排序
+            //,text: '服务端异常,请联系管理员'
+            ,url: "[[@{/}]]"+'pc/goods/getGoodsList.json'
+            ,page: true
+            ,cols: [
+                [
+                    {field: 'checkbox', title: 'checkbox' , type: 'checkbox', fixed: 'left'}
+                    ,{field: 'id', title: 'ID', width:50 }
+                    ,{field: 'goods_name', title: '商品名称'}
+                    ,{field: 'level_name', title: '级别'}
+                    ,{field: 'model_name', title: '型号'}
+                    ,{field: 'guige_name', title: '规格'}
+                    ,{field: 'price', title: '单价', sort: true}
+                    ,{field: 'oil_type', title: '油品类型'}
+                    ,{field: 'brand_name', title: '品牌'}
+                    ,{field: 'state', title: '状态'}
+                    ,{field: 'img1', title: '商品图片', templet: '<div><img src="{{ d.img1 }}"></div>'}
+                    ,{field: 'create_date', title: '创建时间', templet: '<div>{{ layui.laytpl.toDateString(d.create_date) }}</div>', sort: true}
+                    ,{field: 'toolBar', width:110, align:'center', toolbar: '#toolBar', fixed: 'right'}
+                    // ,{field: 'score', title: '评分', width: 80, sort: true}
+                    // ,{field: 'classify', title: '职业', width: 80}
+                    // ,{field: 'wealth', title: '财富', width: 135, sort: true}
+                ]
+            ]
+            ,done: function(res, curr, count){
+                //如果是异步请求数据方式，res即为你接口返回的信息。
+                //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                //console.log(res);
+
+                //得到当前页码
+                //console.log(curr);
+
+                //得到数据总量
+                //console.log(count);
+            }
+        });
+
+        //监听排序事件
+        table.on('sort(table-filter)', function(obj){ //注：sort 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            console.log(obj.field); //当前排序的字段名
+            console.log(obj.type); //当前排序类型：desc（降序）、asc（升序）、null（空对象，默认排序）
+            console.log(this); //当前排序的 th 对象
+
+            //尽管我们的 table 自带排序功能，但并没有请求服务端。
+            //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
+            table.reload('table', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                ,where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                    field: obj.field //排序字段
+                    ,order: obj.type //排序方式
+                }
+            });
+
+            layer.msg('服务端排序。order by '+ obj.field + ' ' + obj.type);
+        });
+
+        table.on('tool(table-filter)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+            //alert(data.id);
+            //alert(layEvent);
+            if(layEvent == 'edit'){
+                layer.open({
+                    type: 2
+                    ,title: '编辑'
+                    ,content: "[[@{/}]]"+'pc/goods/toAddGoods.page?id='+data.id//这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                    ,maxmin: true
+                    ,scrollbar: false
+                    ,area: ['750px','550px']
+                    ,btn: ['确定', '取消']
+                    ,yes: function(index, layero){
+                        //点击确认触发 iframe 内容中的按钮提交
+                        var submit = layero.find('iframe').contents().find("#form-update");
+                        submit.click();
+                    }
+                });
+            }
+            if(layEvent == 'upDown'){
+                $.ajax({
+                    type: "post",
+                    data: {
+                        id: data.id,
+                        state: data.state
+                    },
+                    url: "[[@{/}]]"+"pc/goods/upDown.json",
+                    success: function (result) {
+                        if(result>0){
+                            layer.msg("商品状态修改成功");
+                            table.reload('table');
+                        }
+                    }
+                });
+            }
+            // if(layEvent == 'del'){
+            //     layer.confirm('确认删除？', {
+            //         btn: ['确认','取消'] //按钮
+            //     }, function(){
+            //         layer.msg('删除成功', {icon: 1});
+            //     // }, function(){
+            //     //     layer.msg('也可以这样', {
+            //     //         time: 20000, //20s后自动关闭
+            //     //         btn: ['明白了', '知道了']
+            //     //     });
+            //     });
+            // }
+        });
+
+        var $ = layui.$, active = {
+            reload: function(){
+                var goods_name = $('#goods_name');
+                var oil_type = $('#oil_type');
+                var brand_name = $('#brand_name');
+                //执行重载
+                table.reload('table', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        goods_name: goods_name.val(),
+                        oil_type: oil_type.val(),
+                        brand_name: brand_name.val()
+                    }
+                }, 'data');
+            },
+            reset: function(){
+                var goods_name = $('#goods_name');
+                var oil_type = $('#oil_type');
+                var brand_name = $('#brand_name');
+
+                goods_name.val('');
+                form.render('select');
+
+                //执行重载
+                table.reload('table', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        goods_name: goods_name.val(),
+                        oil_type: oil_type.val(),
+                        brand_name: brand_name.val()
+                    }
+                }, 'data');
+            },
+            add: function(){
+                layer.open({
+                    type: 2
+                    ,title: '添加商品'
+                    ,content: ["[[@{/}]]"+'pc/goods/toAddGoods.page','no']
+                    ,maxmin: true
+                    ,scrollbar: false
+                    ,area: ['750px','550px']
+                    ,btn: ['确定', '取消']
+                    ,yes: function(index, layero){
+                        //点击确认触发 iframe 内容中的按钮提交
+                        var submit = layero.find('iframe').contents().find("#form-add");
+                        submit.click();
+                    }
+                });
+            }
+        };
+
+        $('.tableQuery .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    }();
+</script>
+
+</body>
+</html>

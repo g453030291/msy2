@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>修改商品</title>
+    <link rel="stylesheet" href="../src/css/layui.css" th:href="@{/layui/css/layui.css}">
+    <style type="text/css">
+        .layui-upload-img{
+            width:92px;
+            height: 92px;
+            margin: 0 10px 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<form class="layui-form" action="">
+    <input type="hidden" name="id" th:value="${goods.id}">
+    <div style="margin: 2%;">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">油品类型</label>
+                <div class="layui-input-inline">
+                    <select name="oil_type">
+                        <option value="" th:selected="${goods.oil_type == ''}" ></option>
+                        <option value="汽车用油" th:selected="${goods.oil_type == '汽车用油'}" >汽车用油</option>
+                        <option value="工程机械油" th:selected="${goods.oil_type == '工程机械油'}" >工程机械油</option>
+                        <option value="齿轮油" th:selected="${goods.oil_type == '齿轮油'}" >齿轮油</option>
+                        <option value="防冻液" th:selected="${goods.oil_type == '防冻液'}" >防冻液</option>
+                        <option value="其它" th:selected="${goods.oil_type == '其它'}" >其它</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">品牌</label>
+                <div class="layui-input-inline">
+                    <select name="brand_id" id="brand_id">
+                        <option value="" th:selected="${goods.brand_name == ''}" ></option>
+                        <option th:each="brands:${brands}" th:value="${brands.id}" th:text="${brands.name}" th:selected="${goods.brand_name == brands.name}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">状态</label>
+                <div class="layui-input-inline">
+                    <select name="state" id="state">
+                        <option value=""></option>
+                        <option value="上架" th:selected="${guige.state == '上架'}" >上架</option>
+                        <option value="下架" th:selected="${guige.state == '下架'}" >下架</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">商品名称</label>
+                <div class="layui-input-inline">
+                    <input name="name" autocomplete="off" class="layui-input" th:value="${goods.name}">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">单价</label>
+                <div class="layui-input-inline">
+                    <input name="price" autocomplete="off" class="layui-input" th:value="${guige.price}">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">级别</label>
+                <div class="layui-input-inline">
+                    <input name="level_name" autocomplete="off" class="layui-input" th:value="${level.level_name}">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">规格</label>
+                <div class="layui-input-inline">
+                    <input name="guige_name" autocomplete="off" class="layui-input" th:value="${guige.guige_name}">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-upload">
+                <button type="button" class="layui-btn" id="test-upload-normal"><i class="layui-icon">&#xe67c;</i>上传图片</button><input class="layui-upload-file" type="file" accept="undefined" name="file">
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="test-upload-normal-img" th:src="${guige.img1}">
+                    <input type="hidden" name="img1" id="img1">
+                    <p id="test-upload-demoText"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="form-update" id="form-update" value="确定编辑"/>
+    </div>
+</form>
+
+<script src="../src/layui.js" th:src="@{/layui/layui.all.js}" ></script>
+<script>
+    ;!function(){
+        var form = layui.form
+            ,$ = layui.$
+            ,layer = layui.layer;
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test-upload-normal'
+            ,url: ''
+            ,accept: 'images'
+            ,auto: false
+            ,multiple: false
+            ,size: 500
+            ,choose: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#test-upload-normal-img').attr('src', result); //图片链接(base64)
+                    $('#img1').val(result);
+                });
+            }
+            ,done: function(res){}
+            ,error: function(){}
+        });
+
+        form.on('submit(form-update)', function(data){
+            $.ajax({
+                type: "post",
+                data: $("form").serialize(),
+                url: "[[@{/}]]"+"updateClient.form",
+                success: function(result){
+                    if(result > 0){//数据提交成功,关闭layer
+                        parent.layui.table.reload('table'); //重载表格
+                        parent.layer.close(index); //再执行关闭
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+            return false;
+        });
+    }();
+</script>
+</body>
+</html>

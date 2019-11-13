@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msy.dao.RepoDao">
+
+	<select id="listRepo" parameterType="com.msy.entity.TableModel" resultType="com.msy.entity.Repo" useCache="false">
+		select * from repo
+		<where>
+			<if test="data.name != null and data.name != ''">
+				name like '%${data.name}%'
+			</if>
+		</where>
+				order by ${field} ${order} limit ${page},${limit}
+	</select>
+
+	<select id="repoCount" parameterType="com.msy.entity.TableModel" resultType="java.lang.Long" useCache="false">
+		select count(*) from repo
+		<where>
+			<if test="data.name != null and data.name != ''">
+				name like '%${data.name}%'
+			</if>
+		</where>
+	</select>
+
+</mapper>

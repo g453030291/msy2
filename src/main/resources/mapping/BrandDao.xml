@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msy.dao.BrandDao">
+
+	<select id="listBrand" parameterType="com.msy.entity.TableModel" resultType="com.msy.entity.Brand" useCache="false">
+		select * from brand
+		<where>
+			<if test="data.name != null and data.name != ''">
+				name like '%${data.name}%'
+			</if>
+		</where>
+			order by ${field} ${order} limit ${page},${limit}
+	</select>
+
+	<select id="listBrandCount" parameterType="com.msy.entity.TableModel" resultType="java.lang.Long" useCache="false">
+		select count(*) from brand
+		<where>
+			<if test="data.name != null and data.name != ''">
+				name like '%${data.name}%'
+			</if>
+		</where>
+	</select>
+
+</mapper>

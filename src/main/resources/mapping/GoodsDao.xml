@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msy.dao.GoodsDao">
+
+	<select id="listGoods" parameterType="com.msy.entity.TableModel" resultType="com.msy.entity.Goods" useCache="false">
+		select * from goods
+		<where>
+			<if test="data.goods_name != null and data.goods_name != ''">
+				goods_name like '%${data.goods_name}%'
+			</if>
+			<if test="data.oil_type != null and data.oil_type != ''">
+				and oil_type = #{data.oil_type}
+			</if>
+			<if test="data.brand_name != null and data.brand_name != ''">
+				and brand_name = #{data.brand_name}
+			</if>
+		</where>
+				order by ${field} ${order} limit ${page},${limit}
+	</select>
+
+	<select id="goodsCount" parameterType="com.msy.entity.TableModel" resultType="java.lang.Long" useCache="false">
+		select count(*) from goods
+		<where>
+			<if test="data.goods_name != null and data.goods_name != ''">
+				goods_name like '%${data.goods_name}%'
+			</if>
+			<if test="data.oil_type != null and data.oil_type != ''">
+				and oil_type = #{data.oil_type}
+			</if>
+			<if test="data.brand_name != null and data.brand_name != ''">
+				and brand_name = #{data.brand_name}
+			</if>
+		</where>
+	</select>
+
+</mapper>

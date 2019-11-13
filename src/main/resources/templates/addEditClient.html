@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>添加/修改用户</title>
+    <link rel="stylesheet" href="../src/css/layui.css" th:href="@{/layui/css/layui.css}">
+</head>
+<body>
+
+<form class="layui-form" action="">
+    <input type="hidden" name="id" th:value="${client.id}">
+    <div style="margin: 2%;">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-inline">
+                    <input name="name" autocomplete="off" class="layui-input" th:value="${client.name}">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-inline">
+                    <select name="sex">
+                        <option value="男" th:selected="${client.sex == '男'}">男</option>
+                        <option value="女" th:selected="${client.sex == '女'}">女</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">联系方式1</label>
+                <div class="layui-input-inline">
+                    <input name="telephone1" autocomplete="off" class="layui-input" th:value="${client.telephone1}">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">联系方式2</label>
+                <div class="layui-input-inline">
+                    <input name="telephone2" autocomplete="off" class="layui-input" th:value="${client.telephone2}">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">联系方式3</label>
+                <div class="layui-input-inline">
+                    <input name="telephone3" autocomplete="off" class="layui-input" th:value="${client.telephone3}">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">商铺名称</label>
+                <div class="layui-input-inline">
+                    <input name="store_name" autocomplete="off" class="layui-input" th:value="${client.store_name}">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">用户级别</label>
+                <div class="layui-input-inline">
+                    <select name="level">
+                        <option value="1" th:selected="${client.level == '1'}">1</option>
+                        <option value="2" th:selected="${client.level == '2'}">2</option>
+                        <option value="3" th:selected="${client.level == '3'}">3</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">省份</label>
+                <div class="layui-input-inline">
+                    <select name="province" id="province" lay-filter="province">
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">城市</label>
+                <div class="layui-input-inline">
+                    <select name="city" id="city" lay-filter="city">
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">区/县</label>
+                <div class="layui-input-inline">
+                    <select name="district" id="district" lay-filter="district">
+
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">详细地址</label>
+            <div class="layui-input-block">
+                <input name="address" autocomplete="off" class="layui-input" th:value="${client.address}">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <img th:src="${client.img1}" alt="用户尚未上传" style="width: 20%;height: 15%"/>
+            <img th:src="${client.img2}" alt="用户尚未上传" style="width: 20%;height: 15%"/>
+            <img th:src="${client.img3}" alt="用户尚未上传" style="width: 20%;height: 15%"/>
+            <img th:src="${client.img4}" alt="用户尚未上传" style="width: 20%;height: 15%"/>
+            <img th:src="${client.img5}" alt="用户尚未上传" style="width: 20%;height: 15%"/>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="form-add" id="form-add" value="确定添加"/>
+        <input type="button" lay-submit lay-filter="form-update" id="form-update" value="确定编辑"/>
+    </div>
+</form>
+
+<script src="../src/layui.js" th:src="@{/layui/layui.all.js}" ></script>
+<script>
+    ;!function(){
+        var contentPath = "[[@{/}]]";
+        var form = layui.form
+              ,$ = layui.$
+              ,layer = layui.layer;
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        var province = null;
+        var city = null;
+        var district = null;
+        //阿里云cdn获取省市县
+        $.ajax({
+            type: "get",
+            url: "https://datavmap-public.oss-cn-hangzhou.aliyuncs.com/areas/csv/100000_province.json",
+            success: function (result) {
+                province = result;
+                $("#province").append("<option value=''>请选择</option>");
+                for(var i=0;i<result.rows.length;i++){
+                    //if(result.rows[i].name=="山西省"){
+                    //    $("#province").append("<option value='"+result.rows[i].name+"' selected=\"true\">"+result.rows[i].name+"</option>");
+                    //}else{
+                        $("#province").append("<option value='"+result.rows[i].name+"'>"+result.rows[i].name+"</option>");
+                    //}
+
+                }
+                form.render();
+            },
+            error: function(error){
+                console.log(error);
+                layer.msg("aliyuncdn异常");
+            }
+        });
+        //监听省select选择,控制市选择器更换option
+        form.on('select(province)',function (data) {
+            for(var i=0;i<province.rows.length;i++){
+                if(province.rows[i].name==data.value){
+                    $.ajax({
+                       type: "get",
+                       url: "https://datavmap-public.oss-cn-hangzhou.aliyuncs.com/areas/csv/"+province.rows[i].adcode+"_city.json",
+                        success: function(result){
+                            city = result;
+                            $("#city").empty();
+                            $("#district").empty();
+                            $("#city").append("<option value=''>请选择</option>");
+                            for(var i=0;i<result.rows.length;i++){
+                                $("#city").append("<option value='"+result.rows[i].name+"'>"+result.rows[i].name+"</option>");
+                            }
+                            form.render();
+                        },
+                        error: function(error){
+                            console.log(error);
+                            layer.msg("aliyuncdn异常");
+                        }
+                    });
+                    break;
+                }
+            }
+        });
+        //监听市select选择,控制区县选择器更换option
+        //选择市以后返回的是整个省的县区资料,所以需要额外再次循环判断
+        form.on('select(city)',function (data) {
+            for(var i=0;i<city.rows.length;i++){
+                if(city.rows[i].name==data.value){
+                    $.ajax({
+                        type: "get",
+                        url: "https://datavmap-public.oss-cn-hangzhou.aliyuncs.com/areas/csv/"+city.rows[i].adcode+"_district.json",
+                        success: function(result){
+                            district = result;
+                            $("#district").empty();
+                            $("#district").append("<option value=''>请选择</option>");
+                            for(var i=0;i<result.rows.length;i++){
+                                if(result.rows[i].parent==data.value){
+                                    $("#district").append("<option value='"+result.rows[i].name+"'>"+result.rows[i].name+"</option>");
+                                }
+                            }
+                            form.render();
+                        },
+                        error: function(error){
+                            console.log(error);
+                            layer.msg("aliyuncdn异常");
+                        }
+                    });
+                    break;
+                }
+            }
+        });
+        //监听提交
+        form.on('submit(form-add)', function(data){
+            //var field = data.field; //获取提交的字段
+            $.ajax({
+                type: "post",
+                data: $("form").serialize(),
+                url: "[[@{/}]]"+"addClient.form",
+                success: function(result){
+                    if(result > 0){//数据提交成功,关闭layer
+                        //layer.msg("添加成功");
+                        parent.layui.table.reload('table'); //重载表格
+                        parent.layer.close(index); //再执行关闭
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+
+                }
+            });
+            // layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // })
+            return false;
+        });
+        form.on('submit(form-update)', function(data){
+            $.ajax({
+                type: "post",
+                data: $("form").serialize(),
+                url: "[[@{/}]]"+"updateClient.form",
+                success: function(result){
+                    if(result > 0){//数据提交成功,关闭layer
+                        parent.layui.table.reload('table'); //重载表格
+                        parent.layer.close(index); //再执行关闭
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+            return false;
+        });
+    }();
+</script>
+</body>
+</html>

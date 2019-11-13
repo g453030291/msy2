@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>下单</title>
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.0.1/weui.min.css">
+</head>
+<body ontouchstart="">
+    <div class="container" id="container">
+        <div class="page">
+            <div class="page__hd">
+                <div class="weui-search-bar" id="searchBar">
+                    <form class="weui-search-bar__form">
+                        <div class="weui-search-bar__box">
+                            <i class="weui-icon-search"></i>
+                            <input type="search" class="weui-search-bar__input" placeholder="搜索" required="">
+                            <a href="javascript:" class="weui-icon-clear"></a>
+                        </div>
+                        <label class="weui-search-bar__label">
+                            <i class="weui-icon-search"></i>
+                            <span>搜索</span>
+                        </label>
+                    </form>
+                    <a href="javascript:" class="weui-search-bar__cancel-btn">取消</a>
+                </div>
+            </div>
+            <div class="page__bd">
+                <div class="weui-cells__title">请选择要订购的油品型号及品牌</div>
+                <div class="weui-cells">
+                    <div class="weui-cell weui-cell_access" th:id="oilType">
+                        <div class="weui-cell__bd">
+                            <span style="vertical-align: middle">油品类型</span>
+                            <!--<span class="weui-badge" style="margin-left: 5px;">8</span>-->
+                        </div>
+                        <div class="weui-cell__ft" id="oilTypeVal">请选择</div>
+                    </div>
+                    <div class="weui-cell weui-cell_access" th:id="brand">
+                        <div class="weui-cell__bd">
+                            <span style="vertical-align: middle">品牌</span>
+                        </div>
+                        <div class="weui-cell__ft" id="brandVal">请选择</div>
+                    </div>
+                    <div class="weui-cell weui-cell_access" th:id="oilLevel">
+                        <div class="weui-cell__bd">
+                            <span style="vertical-align: middle">油品级别</span>
+                        </div>
+                        <div class="weui-cell__ft" id="oilLevelVal">请选择</div>
+                    </div>
+                    <div class="weui-cell weui-cell_access" th:id="guige">
+                        <div class="weui-cell__bd">
+                            <span style="vertical-align: middle">油品规格</span>
+                        </div>
+                        <div class="weui-cell__ft" id="guigeVal">请选择</div>
+                    </div>
+                    <div class="weui-cell weui-cell_access" th:id="num">
+                        <div class="weui-cell__bd">
+                            <span style="vertical-align: middle">数量</span>
+                        </div>
+                        <div class="weui-cell__ft" id="numVal">请选择</div>
+                    </div>
+                </div>
+            </div>
+            <div class="page__ft">
+                <div class="weui-panel weui-panel_access" style="margin-top: 4%;margin-bottom: 4%">
+                    <div class="weui-panel__bd">
+                        <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+                            <div class="weui-media-box__hd">
+                                <img class="weui-media-box__thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAMAAAAOusbgAAAAeFBMVEUAwAD///+U5ZTc9twOww7G8MYwzDCH4YcfyR9x23Hw+/DY9dhm2WZG0kbT9NP0/PTL8sux7LFe115T1VM+zz7i+OIXxhes6qxr2mvA8MCe6J6M4oz6/frr+us5zjn2/fa67rqB4IF13XWn6ad83nxa1loqyirn+eccHxx4AAAC/klEQVRo3u2W2ZKiQBBF8wpCNSCyLwri7v//4bRIFVXoTBBB+DAReV5sG6lTXDITiGEYhmEYhmEYhmEYhmEY5v9i5fsZGRx9PyGDne8f6K9cfd+mKXe1yNG/0CcqYE86AkBMBh66f20deBc7wA/1WFiTwvSEpBMA2JJOBsSLxe/4QEEaJRrASP8EVF8Q74GbmevKg0saa0B8QbwBdjRyADYxIhqxAZ++IKYtciPXLQVG+imw+oo4Bu56rjEJ4GYsvPmKOAB+xlz7L5aevqUXuePWVhvWJ4eWiwUQ67mK51qPj4dFDMlRLBZTqF3SDvmr4BwtkECu5gHWPkmDfQh02WLxXuvbvC8ku8F57GsI5e0CmUwLz1kq3kD17R1In5816rGvQ5VMk5FEtIiWislTffuDpl/k/PzscdQsv8r9qWq4LRWX6tQYtTxvI3XyrwdyQxChXioOngH3dLgOFjk0all56XRi/wDFQrGQU3Os5t0wJu1GNtNKHdPqYaGYQuRDfbfDf26AGLYSyGS3ZAK4S8XuoAlxGSdYMKwqZKM9XJMtyqXi7HX/CiAZS6d8bSVUz5J36mEMFDTlAFQzxOT1dzLRljjB6+++ejFqka+mXIe6F59mw22OuOw1F4T6lg/9VjL1rLDoI9Xzl1MSYDNHnPQnt3D1EE7PrXjye/3pVpr1Z45hMUdcACc5NVQI0bOdS1WA0wuz73e7/5TNqBPhQXPEFGJNV2zNqWI7QKBd2Gn6AiBko02zuAOXeWIXjV0jNqdKegaE/kJQ6Bfs4aju04lMLkA2T5wBSYPKDGF3RKhFYEa6A1L1LG2yacmsaZ6YPOSAMKNsO+N5dNTfkc5Aqe26uxHpx7ZirvgCwJpWq/lmX1hA7LyabQ34tt5RiJKXSwQ+0KU0V5xg+hZrd4Bn1n4EID+WkQdgLfRNtvil9SPfwy+WQ7PFBWQz6dGWZBLkeJFXZGCfLUjCgGgqXo5TuSu3cugdcTv/HjqnBTEMwzAMwzAMwzAMwzAMw/zf/AFbXiOA6frlMAAAAABJRU5ErkJggg==" alt="">
+                            </div>
+                            <div class="weui-media-box__bd">
+                                <h4 class="weui-media-box__title">SG15W-40 天津日石 <span style="color: red;float:right">¥180</span></h4>
+                                <p class="weui-media-box__desc">规&nbsp;&nbsp;&nbsp;&nbsp;格
+                                    <span th:id="guige" style="padding-left:32%">4L*6桶/箱</span>
+                                </p>
+                                <p class="weui-media-box__desc">数&nbsp;&nbsp;&nbsp;&nbsp;量
+                                    <input class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入购买数量" style="width: 80%;text-align: center;color: rgba(0,0,0,.3)"/>
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="weui-panel__ft">
+                        <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link" style="padding: 8px">
+                            <div class="weui-cell__bd" style="text-align: center">添加至购物车</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+<!--<a href="javascript:;" id="doubleLinePicker" class="weui-btn weui-btn_default">Cascade-Picker</a>-->
+
+
+
+
+<!--<div class="weui-panel weui-panel_access" style="margin-top: 4%;margin-bottom: 4%">-->
+    <!--<div class="weui-panel__bd">-->
+        <!--<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">-->
+            <!--<div class="weui-media-box__hd">-->
+                <!--<img class="weui-media-box__thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAMAAAAOusbgAAAAeFBMVEUAwAD///+U5ZTc9twOww7G8MYwzDCH4YcfyR9x23Hw+/DY9dhm2WZG0kbT9NP0/PTL8sux7LFe115T1VM+zz7i+OIXxhes6qxr2mvA8MCe6J6M4oz6/frr+us5zjn2/fa67rqB4IF13XWn6ad83nxa1loqyirn+eccHxx4AAAC/klEQVRo3u2W2ZKiQBBF8wpCNSCyLwri7v//4bRIFVXoTBBB+DAReV5sG6lTXDITiGEYhmEYhmEYhmEYhmEY5v9i5fsZGRx9PyGDne8f6K9cfd+mKXe1yNG/0CcqYE86AkBMBh66f20deBc7wA/1WFiTwvSEpBMA2JJOBsSLxe/4QEEaJRrASP8EVF8Q74GbmevKg0saa0B8QbwBdjRyADYxIhqxAZ++IKYtciPXLQVG+imw+oo4Bu56rjEJ4GYsvPmKOAB+xlz7L5aevqUXuePWVhvWJ4eWiwUQ67mK51qPj4dFDMlRLBZTqF3SDvmr4BwtkECu5gHWPkmDfQh02WLxXuvbvC8ku8F57GsI5e0CmUwLz1kq3kD17R1In5816rGvQ5VMk5FEtIiWislTffuDpl/k/PzscdQsv8r9qWq4LRWX6tQYtTxvI3XyrwdyQxChXioOngH3dLgOFjk0all56XRi/wDFQrGQU3Os5t0wJu1GNtNKHdPqYaGYQuRDfbfDf26AGLYSyGS3ZAK4S8XuoAlxGSdYMKwqZKM9XJMtyqXi7HX/CiAZS6d8bSVUz5J36mEMFDTlAFQzxOT1dzLRljjB6+++ejFqka+mXIe6F59mw22OuOw1F4T6lg/9VjL1rLDoI9Xzl1MSYDNHnPQnt3D1EE7PrXjye/3pVpr1Z45hMUdcACc5NVQI0bOdS1WA0wuz73e7/5TNqBPhQXPEFGJNV2zNqWI7QKBd2Gn6AiBko02zuAOXeWIXjV0jNqdKegaE/kJQ6Bfs4aju04lMLkA2T5wBSYPKDGF3RKhFYEa6A1L1LG2yacmsaZ6YPOSAMKNsO+N5dNTfkc5Aqe26uxHpx7ZirvgCwJpWq/lmX1hA7LyabQ34tt5RiJKXSwQ+0KU0V5xg+hZrd4Bn1n4EID+WkQdgLfRNtvil9SPfwy+WQ7PFBWQz6dGWZBLkeJFXZGCfLUjCgGgqXo5TuSu3cugdcTv/HjqnBTEMwzAMwzAMwzAMwzAMw/zf/AFbXiOA6frlMAAAAABJRU5ErkJggg==" alt="">-->
+            <!--</div>-->
+            <!--<div class="weui-media-box__bd">-->
+                <!--<h4 class="weui-media-box__title">SG15W-40 天津日石 <span style="color: red;float:right">¥180</span></h4>-->
+                <!--<p class="weui-media-box__desc">规&nbsp;&nbsp;&nbsp;&nbsp;格-->
+                    <!--<span th:id="guige" style="padding-left:32%">4L*6桶/箱</span>-->
+                <!--</p>-->
+                <!--<p class="weui-media-box__desc">数&nbsp;&nbsp;&nbsp;&nbsp;量-->
+                    <!--<input class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入购买数量" style="width: 80%;text-align: center;color: rgba(0,0,0,.3)"/>-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</a>-->
+    <!--</div>-->
+    <!--<div class="weui-panel__ft">-->
+        <!--<a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link" style="padding: 8px">-->
+            <!--<div class="weui-cell__bd" style="text-align: center">添加至购物车</div>-->
+        <!--</a>-->
+    <!--</div>-->
+<!--</div>-->
+
+<script type="text/javascript" th:src="@{/jquery/jquery-3.4.1.min.js}"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.2.1/weui.min.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script type="text/javascript">
+    weui.searchBar('#searchBar');
+    $("#oilType").on("click",function(){
+        // 单列picker
+        weui.picker([
+            {
+                label: '请选择',
+                value: 0
+            },
+            {
+                label: '汽机油',
+                value: 1
+            },
+            {
+                label: '工程机械用油',
+                value: 2
+            },
+            {
+                label: '防冻液',
+                value: 3
+            },
+            {
+                label: '其它',
+                value: 4,
+            }
+        ], {
+            //className: 'custom-classname',
+            //container: 'body',
+             defaultValue: [0],
+            onChange: function (result) {
+                console.log(result)
+            },
+            onConfirm: function (result) {
+                console.log(result);
+                $("#oilTypeVal").html(result[0].label);
+                search();
+            }
+            //id: 'oilType'
+        });
+    });
+    $("#brand").on("click",function(){
+        // 单列picker
+        weui.picker([
+            {
+                label: '请选择',
+                value: 0
+            },
+            {
+                label: '天津日石',
+                value: 1
+            },
+            {
+                label: '日本矫马',
+                value: 2
+            }
+        ], {
+            // className: 'custom-classname',
+            // container: 'body',
+            defaultValue: [0],
+            onChange: function (result) {
+                //console.log(result)
+            },
+            onConfirm: function (result) {
+                //console.log(result)
+                $("#brandVal").html(result[0].label);
+                search();
+            }
+            //id: 'singleLinePicker'
+        });
+    });
+    $("#oilLevel").on("click",function(){
+        // 单列picker
+        weui.picker([
+            {
+                label: '请选择',
+                value: 0
+            },
+            {
+                label: 'SJ15W-40',
+                value: 1
+            },
+            {
+                label: 'SG15W-30',
+                value: 2
+            },
+            {
+                label: 'SW15-10',
+                value: 3
+            }
+        ], {
+            // className: 'custom-classname',
+            // container: 'body',
+            defaultValue: [0],
+            onChange: function (result) {
+                //console.log(result)
+            },
+            onConfirm: function (result) {
+                //console.log(result);
+                $("#oilLevelVal").html(result[0].label);
+                search();
+            }
+            //id: 'singleLinePicker'
+        });
+    });
+    $('#guige').on('click', function () {
+        weui.picker([
+            {
+                label: '请选择',
+                value: 0
+            },{
+                label: '4L*6桶/箱',
+                value: 1
+            },
+            {
+                label: '4L/桶',
+                value: 2
+            }
+        ], {
+            defaultValue: [0],
+            onChange: function (result) {
+                //console.log(result);
+            },
+            onConfirm: function (result) {
+                //console.log(result);
+                $("#guigeVal").html(result[0].label);
+                search();
+            }
+            //title: '选择商品规格'
+        });
+    });
+    $('#num').on('click', function () {
+        weui.picker([{
+            label: '请选择',
+            value: 0
+        },{
+            label: '0',
+            value: 1
+        }, {
+            label: '1',
+            value: 2
+        }, {
+            label: '2',
+            value: 3
+        }, {
+            label: '3',
+            value: 4
+        }, {
+            label: '4',
+            value: 5
+        }, {
+            label: '5',
+            value: 6
+        }, {
+            label: '6',
+            value: 7
+        }, {
+            label: '7',
+            value: 8
+        }, {
+            label: '8',
+            value: 9
+        }, {
+            label: '9',
+            value: 10
+        }, {
+            label: '10',
+            value: 11
+        }], {
+            defaultValue: [0],
+            onChange: function (result) {
+                //console.log(result);
+            },
+            onConfirm: function (result) {
+                //console.log(result);
+                $("#numVal").html(result[0].label);
+                search();
+            },
+            //title: '选择商品规格'
+        });
+    });
+    function search(){
+        var oilType = $("#oilTypeVal").html();
+        var brand = $("#brandVal").html();
+        var oilLevel = $("#oilLevelVal").html();
+        var guige = $("#guigeVal").html();
+        var num = $("#numVal").html();
+
+        //$.ajax({})
+    }
+</script>
+</body>
+</html>

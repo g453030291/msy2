@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>我的</title>
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.0.1/weui.min.css">
+</head>
+<body ontouchstart="">
+<div class="weui-cells__title">个人信息</div>
+<div class="weui-cells">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <p>姓名</p>
+        </div>
+        <div class="weui-cell__ft">葛暮申</div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <p>性别</p>
+        </div>
+        <div class="weui-cell__ft">男</div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <p>联系方式</p>
+        </div>
+        <div class="weui-cell__ft">18535306177</div>
+    </div>
+</div>
+
+
+<div class="weui-cells__title">配送记录</div>
+<div class="weui-cells">
+    <a class="weui-cell weui-cell_access" href="javascript:;" th:href="@{/wx/toOrder.page(queryType=all)}">
+        <div class="weui-cell__hd"><img src="..." th:src="@{/icon/quanbudingdan.png}" alt="全部订单" style="width:20px;margin-right:5px;display:block"></div>
+        <div class="weui-cell__bd">
+            <p>全部订单</p>
+        </div>
+        <div class="weui-cell__ft"></div>
+    </a>
+    <!--<a class="weui-cell weui-cell_access" href="javascript:modelNotReady();">  &lt;!&ndash;th:href="@{/wx/toOrder.page(queryType=waitPay)}"&ndash;&gt;-->
+        <!--<div class="weui-cell__hd"><img src="..." th:src="@{/icon/daifukuan.png}" alt="待付款" style="width:20px;margin-right:5px;display:block"></div>-->
+        <!--<div class="weui-cell__bd">-->
+            <!--<p>待付款</p>-->
+        <!--</div>-->
+        <!--<div class="weui-cell__ft"></div>-->
+    <!--</a>-->
+    <a class="weui-cell weui-cell_access" href="javascript:;" th:href="@{/wx/toOrder.page(queryType=sending)}">
+        <div class="weui-cell__hd"><img src="..." th:src="@{/icon/daishouhuo.png}" alt="" style="width:20px;margin-right:5px;display:block"></div>
+        <div class="weui-cell__bd">
+            <p>配送中</p>
+        </div>
+        <div class="weui-cell__ft"></div>
+    </a>
+</div>
+
+<script type="text/javascript" th:src="@{/jquery/jquery-3.4.1.min.js}"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.2.1/weui.min.js"></script>
+<script type="text/javascript">
+    function modelNotReady() {
+        weui.alert("功能尚未开放,敬请期待!");
+    }
+</script>
+</body>
+</html>

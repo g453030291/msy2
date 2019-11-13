@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>我的</title>
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.0.1/weui.min.css">
+</head>
+<body ontouchstart="">
+<div class="weui-cells__title">个人信息</div>
+<div class="weui-cells">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <p>姓名</p>
+        </div>
+        <div class="weui-cell__ft">葛暮申</div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <p>性别</p>
+        </div>
+        <div class="weui-cell__ft">男</div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <p>联系方式</p>
+        </div>
+        <div class="weui-cell__ft">18535306177</div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <p>配送地址</p>
+        </div>
+        <div class="weui-cell__ft">北京市海淀区用友产业园西区2-2-16</div>
+    </div>
+</div>
+
+<div class="weui-cells__title">认证信息</div>
+<div class="weui-cells">
+    <a class="weui-cell weui-cell_access" href="javascript:;" th:href="@{/wx/toRegister.page}">
+        <div class="weui-cell__bd">
+            <p>实名认证</p>
+        </div>
+        <div class="weui-cell__ft" style="color:#fa5151">未认证</div><!--#07c160-->
+    </a>
+</div>
+
+<div class="weui-cells__title">我的订单</div>
+<div class="weui-cells">
+    <a class="weui-cell weui-cell_access" href="javascript:;" th:href="@{/wx/toOrder.page(queryType=all)}">
+        <div class="weui-cell__hd"><img src="..." th:src="@{/icon/quanbudingdan.png}" alt="全部订单" style="width:20px;margin-right:5px;display:block"></div>
+        <div class="weui-cell__bd">
+            <p>全部订单</p>
+        </div>
+        <div class="weui-cell__ft"></div>
+    </a>
+    <a class="weui-cell weui-cell_access" href="javascript:modelNotReady();">  <!--th:href="@{/wx/toOrder.page(queryType=waitPay)}"-->
+        <div class="weui-cell__hd"><img src="..." th:src="@{/icon/daifukuan.png}" alt="待付款" style="width:20px;margin-right:5px;display:block"></div>
+        <div class="weui-cell__bd">
+            <p>待付款</p>
+        </div>
+        <div class="weui-cell__ft"></div>
+    </a>
+    <a class="weui-cell weui-cell_access" href="javascript:;" th:href="@{/wx/toOrder.page(queryType=sending)}">
+        <div class="weui-cell__hd"><img src="..." th:src="@{/icon/daishouhuo.png}" alt="" style="width:20px;margin-right:5px;display:block"></div>
+        <div class="weui-cell__bd">
+            <p>配送中</p>
+        </div>
+        <div class="weui-cell__ft"></div>
+    </a>
+</div>
+
+<div class="weui-cells__title">商家详情</div>
+<div class="weui-cells">
+    <a class="weui-cell weui-cell_access" href="javascript:;">
+        <div class="weui-cell__hd"><img src="..." th:src="@{/icon/ditu.png}" alt="地图" style="width:20px;margin-right:5px;display:block"></div>
+        <div class="weui-cell__bd">
+            <p>地址</p>
+        </div>
+        <div class="weui-cell__ft">南外环23号(金色海洋商务会馆斜对面)</div>
+    </a>
+    <a class="weui-cell weui-cell_access" href="tel:10086">
+        <div class="weui-cell__hd"><img src="..." th:src="@{/icon/kefu.png}" alt="联系方式" style="width:20px;margin-right:5px;display:block"></div>
+        <div class="weui-cell__bd">
+            <p>联系方式</p>
+        </div>
+        <div class="weui-cell__ft">0353-2077866</div>
+    </a>
+</div>
+
+
+<!--<div class="weui-cells__title">带图标、说明的列表项</div>-->
+<!--<div class="weui-cells">-->
+    <!--<div class="weui-cell">-->
+        <!--<div class="weui-cell__hd"><img src="..." alt="" style="width:20px;margin-right:5px;display:block"></div>-->
+        <!--<div class="weui-cell__bd">-->
+            <!--<p>标题文字</p>-->
+        <!--</div>-->
+        <!--<div class="weui-cell__ft">说明文字</div>-->
+    <!--</div>-->
+    <!--<div class="weui-cell">-->
+        <!--<div class="weui-cell__hd"><img src="..." alt="" style="width:20px;margin-right:5px;display:block"></div>-->
+        <!--<div class="weui-cell__bd">-->
+            <!--<p>标题文字</p>-->
+        <!--</div>-->
+        <!--<div class="weui-cell__ft">说明文字</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+
+
+<!--<div class="weui-cells__title">带跳转的列表项</div>-->
+<!--<div class="weui-cells">-->
+    <!--<a class="weui-cell weui-cell_access" href="javascript:;">-->
+        <!--<div class="weui-cell__bd">-->
+            <!--<p>cell standard</p>-->
+        <!--</div>-->
+        <!--<div class="weui-cell__ft">-->
+        <!--</div>-->
+    <!--</a>-->
+    <!--<a class="weui-cell weui-cell_access" href="javascript:;">-->
+        <!--<div class="weui-cell__bd">-->
+            <!--<p>cell standard</p>-->
+        <!--</div>-->
+        <!--<div class="weui-cell__ft">-->
+        <!--</div>-->
+    <!--</a>-->
+<!--</div>-->
+
+
+
+<!--<div class="weui-cells__title">带图标、说明、跳转的列表项</div>-->
+<!--<div class="weui-cells">-->
+
+    <!--<a class="weui-cell weui-cell_access" href="javascript:;">-->
+        <!--<div class="weui-cell__hd"><img src="..." alt="" style="width:20px;margin-right:5px;display:block"></div>-->
+        <!--<div class="weui-cell__bd">-->
+            <!--<p>cell standard</p>-->
+        <!--</div>-->
+        <!--<div class="weui-cell__ft">说明文字</div>-->
+    <!--</a>-->
+    <!--<a class="weui-cell weui-cell_access" href="javascript:;">-->
+        <!--<div class="weui-cell__hd"><img src="..." alt="" style="width:20px;margin-right:5px;display:block"></div>-->
+        <!--<div class="weui-cell__bd">-->
+            <!--<p>cell standard</p>-->
+        <!--</div>-->
+        <!--<div class="weui-cell__ft">说明文字</div>-->
+    <!--</a>-->
+<!--</div>-->
+<script type="text/javascript" th:src="@{/jquery/jquery-3.4.1.min.js}"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.2.1/weui.min.js"></script>
+<script type="text/javascript">
+    function modelNotReady() {
+        weui.alert("功能尚未开放,敬请期待!");
+    }
+</script>
+</body>
+</html>
