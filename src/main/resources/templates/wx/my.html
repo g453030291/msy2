@@ -2,7 +2,7 @@
 <html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
     <title>我的</title>
     <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.0.1/weui.min.css">
 </head>
@@ -13,25 +13,26 @@
         <div class="weui-cell__bd">
             <p>姓名</p>
         </div>
-        <div class="weui-cell__ft">葛暮申</div>
+        <div class="weui-cell__ft" th:text="${client.name}"></div>
     </div>
     <div class="weui-cell">
         <div class="weui-cell__bd">
             <p>性别</p>
         </div>
-        <div class="weui-cell__ft">男</div>
+        <div class="weui-cell__ft" th:text="${client.sex}"></div>
     </div>
     <div class="weui-cell">
         <div class="weui-cell__bd">
             <p>联系方式</p>
         </div>
-        <div class="weui-cell__ft">18535306177</div>
+        <div class="weui-cell__ft" th:text="${client.telephone1}"></div>
     </div>
     <div class="weui-cell">
         <div class="weui-cell__bd">
             <p>配送地址</p>
         </div>
-        <div class="weui-cell__ft">北京市海淀区用友产业园西区2-2-16</div>
+        <div class="weui-cell__ft" th:if="${client.send_province != null}" th:text="${client.send_province +' '+ client.send_city +' '+ client.send_district +' '+ client.address}"></div>
+        <div class="weui-cell__ft" th:if="${client.send_province == null}"></div>
     </div>
 </div>
 
@@ -41,7 +42,8 @@
         <div class="weui-cell__bd">
             <p>实名认证</p>
         </div>
-        <div class="weui-cell__ft" style="color:#fa5151">未认证</div><!--#07c160-->
+        <div class="weui-cell__ft" th:unless="${client.verified == '已认证' }" th:text="${client.verified}" style="color:#fa5151">未认证</div>
+        <div class="weui-cell__ft" th:if="${client.verified == '已认证' }" th:text="${client.verified}" style="color:#07c160">已认证</div>
     </a>
 </div>
 
@@ -61,7 +63,7 @@
         </div>
         <div class="weui-cell__ft"></div>
     </a>
-    <a class="weui-cell weui-cell_access" href="javascript:;" th:href="@{/wx/toOrder.page(queryType=sending)}">
+    <a class="weui-cell weui-cell_access" href="javascript:modelNotReady();"> <!--th:href="@{/wx/toOrder.page(queryType=sending)}"-->
         <div class="weui-cell__hd"><img src="..." th:src="@{/icon/daishouhuo.png}" alt="" style="width:20px;margin-right:5px;display:block"></div>
         <div class="weui-cell__bd">
             <p>配送中</p>

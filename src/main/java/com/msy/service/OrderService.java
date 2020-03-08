@@ -5,6 +5,7 @@ import com.msy.entity.*;
 import com.msy.util.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -47,25 +48,27 @@ public class OrderService {
 	 * @return
 	 */
 	public Integer addOrder(OrderDTO orderDTO) {
+		if(StringUtils.isEmpty(orderDTO.getTelephone())){
+			return 0;
+		}
 		List<Client> clients = clientService.findClientByTelephone(orderDTO.getTelephone());
+		Order order = new Order();
 		if(clients.size()!=1){
 			return 0;
 		}
 		Staff staff = staffService.findStaffById(orderDTO.getSend_id());
-		if(staff==null){
-			return 0;
+		if(staff!=null){
+			order.setSend_name(staff.getName());
 		}
 		Repo repo = repoService.findRepoById(orderDTO.getRepo_id());
-		if(repo==null){
-			return 0;
+		if(repo!=null){
+			order.setRepo_name(repo.getName());
 		}
-		Order order = new Order();
 		order.setClient_id(clients.get(0).getId());
 		order.setClient_name(clients.get(0).getName());
 		order.setStore_name(clients.get(0).getStore_name());
 		order.setTelephone(orderDTO.getTelephone());
 		order.setSend_id(orderDTO.getSend_id());
-		order.setSend_name(staff.getName());
 		order.setMoney(orderDTO.getMoney());
 		order.setPay_state(orderDTO.getPay_state());
 		order.setOrder_date(orderDTO.getOrder_date()==null?new Date():orderDTO.getOrder_date());
@@ -76,7 +79,6 @@ public class OrderService {
 		order.setArrears_money(orderDTO.getArrears_money());
 		order.setArrears_date(orderDTO.getArrears_date());
 		order.setRepo_id(orderDTO.getRepo_id());
-		order.setRepo_name(repo.getName());
 		orderDao.addOrder(order);
 		return order.getId();
 	}
@@ -127,5 +129,9 @@ public class OrderService {
 
 	public List<ArrearsLog> findArrearsLog(Integer orderId) {
 		return orderDao.findArrearsLog(orderId);
+	}
+
+	public List<Order> findOrderByClientId(Integer id) {
+		return orderDao.findOrderByClientId(id);
 	}
 }

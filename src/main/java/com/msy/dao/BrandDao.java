@@ -32,4 +32,7 @@ public interface BrandDao {
 
 	@Update("update level_guige set state = #{1} where id =#{0}")
 	Integer upDown(String id, String state);
+
+	@Update("update goods set state = '下架' where brand_id = #{0}")
+	int brandDown(String id);
 }

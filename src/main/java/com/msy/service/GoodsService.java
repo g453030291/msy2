@@ -2,6 +2,7 @@ package com.msy.service;
 
 import com.msy.dao.GoodsDao;
 import com.msy.entity.*;
+import com.msy.entity.wx.WxPageUtil;
 import com.msy.util.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,5 +65,34 @@ public class GoodsService {
 
 	public Goods findGoodsByblmg(String brand_name, String level_name, String model_name, String guige_name) {
 		return goodsDao.findGoodsByblmg(brand_name,level_name,model_name,guige_name);
+	}
+
+	public List<Goods> listGoodsByOilType(String oilType) {
+		return goodsDao.listGoodsByOilType(oilType);
+	}
+
+	public WxPageUtil<List<GoodsDTO3>> pageGoodsByGoodsDTO2(WxPageUtil wxPageUtil, GoodsDTO2 goodsDTO2) {
+		wxPageUtil.setData(goodsDTO2);
+		wxPageUtil.setNum((wxPageUtil.getNum()-1)*wxPageUtil.getSize());
+		List<GoodsDTO3> goodsDTO3s = goodsDao.listGoodsByGoodsDTO2(wxPageUtil);
+		Integer count = goodsDao.countGoodsByGoodsDTO2(wxPageUtil);
+		WxPageUtil<List<GoodsDTO3>> page = new WxPageUtil<>();
+		page.setNum(wxPageUtil.getNum());
+		page.setSize(wxPageUtil.getSize());
+		page.setData(goodsDTO3s);
+		page.setTotalSize(count);
+		return page;
+	}
+
+	public List<Goods> getLevelByOilTypeAndBrand(String oilType, String brandVal) {
+		return goodsDao.getLevelByOilTypeAndBrand(oilType,brandVal);
+	}
+
+	public List<Goods> getLevelByOilTypeAndBrandAndLevel(String oilType, String brandVal, String oilLevelVal) {
+		return goodsDao.getLevelByOilTypeAndBrandAndLevel(oilType,brandVal,oilLevelVal);
+	}
+
+	public List<Goods> cartGoodsByIds(List<Cart> carts) {
+		return goodsDao.cartGoodsByIds(carts);
 	}
 }

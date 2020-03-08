@@ -13,18 +13,6 @@ import java.util.List;
 @ToString
 public class OrderDTO {
 
-	private String brand_name;
-
-	private String level_name;
-
-	private String model_name;
-
-	private String guige_name;
-
-	private Integer buy_count;
-
-	private BigDecimal price;
-
 	private Integer repo_id;
 
 	private String telephone;

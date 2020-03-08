@@ -22,12 +22,15 @@ public class HomeController {
 	public String toHomePage(Model model){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		List<Order> orders = orderService.arrearsOrder();
-		for (int i = 0; i < orders.size(); i++){
-			Date arrears = orders.get(i).getArrears_date();
-			//这里用is_arrears代替arrears_date,保存格式过的时间
-			orders.get(i).setIs_arrears(sdf.format(arrears));
+		if(orders!=null && orders.size()>0) {
+			for (int i = 0; i < orders.size(); i++) {
+				//这里存款时间不能为空,否则会报NullPointException
+				Date arrears = orders.get(i).getArrears_date();
+				//这里用is_arrears代替arrears_date,保存格式过的时间
+				orders.get(i).setIs_arrears(sdf.format(arrears));
+			}
+			model.addAttribute("orders", orders);
 		}
-		model.addAttribute("orders",orders);
 		return "/home";
 	}
 }

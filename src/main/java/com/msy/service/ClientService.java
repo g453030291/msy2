@@ -31,6 +31,7 @@ public class ClientService {
 
 	@Transactional(rollbackFor = Exception.class)
 	public Integer addClient(Client client){
+		client.setVerified("未认证");
 		return clientDao.addClient(client);
 	}
 
@@ -57,5 +58,42 @@ public class ClientService {
 
 	public List<Client> findClientByTelephone(String telephone) {
 		return clientDao.findClientByTelephone(telephone);
+	}
+
+	public Client findClientByOpenId(String openid){
+		return clientDao.findClientByOpenID(openid);
+	}
+
+	public boolean updateRegisterClient(Client registerClient, Integer id) {
+		registerClient.setId(id);
+		return clientDao.updateRegisterClient(registerClient);
+	}
+
+	public void addImg1(String fileVal, Integer id) {
+		clientDao.addImg1(fileVal,id);
+	}
+
+	public void addImg2(String fileVal, Integer id) {
+		clientDao.addImg2(fileVal,id);
+	}
+
+	public void addImg3(String fileVal, Integer id) {
+		clientDao.addImg3(fileVal,id);
+	}
+
+	public void addImg4(String fileVal, Integer id) {
+		clientDao.addImg4(fileVal,id);
+	}
+
+	public void addImg5(String fileVal, Integer id) {
+		clientDao.addImg5(fileVal,id);
+	}
+
+	public Integer findVerifiedState() {
+		return clientDao.findVerifiedState();
+	}
+
+	public Integer updateVerified(Integer verified) {
+		return clientDao.updateVerified(verified);
 	}
 }

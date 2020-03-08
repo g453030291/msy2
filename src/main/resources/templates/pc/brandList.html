@@ -38,8 +38,8 @@
             </div>
         </div>
         <script type="text/html" th:id="toolBar">
-            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-            <!--<a class="layui-btn layui-btn-xs" lay-event="level">级别</a>-->
+            <!--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
+            <a class="layui-btn layui-btn-xs" lay-event="brandDown">品牌下架</a>
             <!--<a class="layui-btn layui-btn-xs" lay-event="guige">规格</a>-->
             <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
         </script>
@@ -150,22 +150,22 @@
                             }
                         });
                     }
-                    // if(layEvent == 'level'){
-                    //     layer.open({
-                    //         type: 2
-                    //         ,title: '添加级别'
-                    //         ,content: "[[@{/}]]"+'pc/brand/toAddLevel.page?id='+data.id//这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
-                    //         ,maxmin: true
-                    //         ,scrollbar: false
-                    //         ,area: ['320px','200px']
-                    //         ,btn: ['确定', '取消']
-                    //         ,yes: function(index, layero){
-                    //             //点击确认触发 iframe 内容中的按钮提交
-                    //             var submit = layero.find('iframe').contents().find("#form-add");
-                    //             submit.click();
-                    //         }
-                    //     });
-                    // }
+                    if(layEvent == 'brandDown'){
+                        layer.confirm('确认该品牌下架？', {
+                            btn: ['确认','取消'] //按钮
+                        }, function(){
+                            $.ajax({
+                                type: "post",
+                                data: {
+                                    id: data.id
+                                },
+                                url: "[[@{/}]]"+"pc/brand/brandDown.json",
+                                success: function (result) {
+                                    layer.msg('操作成功', {icon: 1});
+                                }
+                            });
+                        });
+                    }
                     // if(layEvent == 'guige'){
                     //     layer.open({
                     //         type: 2

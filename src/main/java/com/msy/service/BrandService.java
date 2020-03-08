@@ -55,4 +55,8 @@ public class BrandService {
 	public Integer upDown(String id, String state) {
 		return brandDao.upDown(id,state);
 	}
+
+	public int brandDown(String id) {
+		return brandDao.brandDown(id);
+	}
 }

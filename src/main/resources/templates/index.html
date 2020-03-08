@@ -83,7 +83,7 @@
         </ul>
         <!--头部右侧导航-->
         <ul class="layui-nav layui-layout-right" lay-filter="rightmenu">
-            <li class="layui-nav-item"><a href="./login.html">退出</a></li>
+            <li class="layui-nav-item"><a href="javascript:logout()">退出</a></li>
         </ul>
     </div>
     <!--左侧-->
@@ -96,12 +96,12 @@
                 <li class="layui-nav-item layui-nav-itemed">
                     <a href="javascript:;" title="菜单"><i class="layui-icon layui-icon-home"></i><cite>菜单</cite></a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" th:lay-href="@{/toClientList.page}">客户列表</a></dd>
+                        <dd><a href="javascript:;" th:lay-href="@{/pc/client/toClientList.page}">客户列表</a></dd>
                         <dd><a href="javascript:;" th:lay-href="@{/pc/goods/toGoodsList.page}">商品列表</a></dd>
                         <dd><a href="javascript:;" th:lay-href="@{/pc/order/toOrderList.page}">订单列表</a></dd>
                         <dd><a href="javascript:;" th:lay-href="@{/pc/order/toAddOrder.page}">添加订单</a></dd>
                         <dd><a href="javascript:;" th:lay-href="@{/pc/brand/toBrandList.page}">品牌列表</a></dd>
-                        <dd><a href="javascript:;" th:lay-href="@{/toOrderList.page}">库存盘点</a></dd>
+                        <!--<dd><a href="javascript:;" th:lay-href="@{/toOrderList.page}">库存盘点</a></dd>-->
                         <dd><a href="javascript:;" th:lay-href="@{/pc/repo/toRepoList.page}">仓库列表</a></dd>
                         <dd><a href="javascript:;" th:lay-href="@{/pc/stock/toStockLogList.page}">进货记录</a></dd>
                         <dd><a href="javascript:;" th:lay-href="@{/pc/staff/toStaffList.page}">员工管理</a></dd>
@@ -131,6 +131,7 @@
     <div class="layui-footer">Copyright © 2019 gms</div>
 </div>
 <script src="../src/layui.js" th:src="@{/layui/layui.all.js}" ></script>
+<script type="text/javascript" th:src="@{/jquery/jquery-3.4.1.min.js}"></script>
 <script>
     ;!function(){
         var element = layui.element
@@ -220,6 +221,20 @@
             }
         });
     }();
+    function logout(){
+        $.ajax({
+            type: "post",
+            data: null,
+            async: false,
+            url: "[[@{/}]]"+"pc/login/logout.form",
+            success: function(result){
+                window.location.href="[[@{/}]]"+"pc/login/toLogin.page";
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
 </script>
 </body>
 </html>

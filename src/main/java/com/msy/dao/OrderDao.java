@@ -24,12 +24,6 @@ public interface OrderDao {
 	@Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
 	int addOrder(Order order);
 
-	@Select("select * from goods where id = #{0}")
-	Client selectOrder(String orderId);
-
-	@Update("update goods set name = #{name},price=#{price} where id = #{id}")
-	Integer updateOrder(Order order);
-
 	Integer addOrderGoods(List<OrderGoods> orderGoods);
 
 	@Select("select * from msy_order where is_arrears = '是'")
@@ -49,4 +43,7 @@ public interface OrderDao {
 
 	@Select("select * from arrears_log where order_id = #{0}")
 	List<ArrearsLog> findArrearsLog(Integer orderId);
+
+	@Select("select * from msy_order where client_id = #{0} order by create_date desc")
+	List<Order> findOrderByClientId(Integer id);
 }

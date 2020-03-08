@@ -42,4 +42,32 @@ public interface ClientDao {
 
 	@Select("select * from client where telephone1 = #{0} or telephone2 = #{0} or telephone3 = #{0}")
 	List<Client> findClientByTelephone(String telephone);
+
+	@Select("select * from client where openid = #{0}")
+	Client findClientByOpenID(String openid);
+
+	@Update("update client set name=#{name},telephone1=#{telephone1},id_card=#{id_card},sex=#{sex},send_province=#{send_province},send_city=#{send_city},send_district=#{send_district},address=#{address}" +
+			"where id = #{id}")
+	boolean updateRegisterClient(Client registerClient);
+
+	@Update("update client set img1 = #{0} where id = #{1}")
+	void addImg1(String fileVal, Integer id);
+
+	@Update("update client set img2 = #{0} where id = #{1}")
+	void addImg2(String fileVal, Integer id);
+
+	@Update("update client set img3 = #{0} where id = #{1}")
+	void addImg3(String fileVal, Integer id);
+
+	@Update("update client set img4 = #{0} where id = #{1}")
+	void addImg4(String fileVal, Integer id);
+
+	@Update("update client set img5 = #{0} where id = #{1}")
+	void addImg5(String fileVal, Integer id);
+
+	@Select("select verified from verified where id = 1")
+	Integer findVerifiedState();
+
+	@Update("update verified set verified=#{verified} where id = 1")
+	Integer updateVerified(Integer verified);
 }

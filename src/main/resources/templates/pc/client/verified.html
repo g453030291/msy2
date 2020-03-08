@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>实名认证状态</title>
+    <link rel="stylesheet" href="../src/css/layui.css" th:href="@{/layui/css/layui.css}">
+</head>
+<body>
+
+<form class="layui-form" action="">
+    <div style="margin: 2%;">
+        <div class="layui-form-item">
+
+            <div class="layui-inline">
+                <label class="layui-form-label">实名认证</label>
+                <div class="layui-input-inline">
+                    <select name="verified">
+                        <option value="0" th:selected="${verified == 0}">关闭</option>
+                        <option value="1" th:selected="${verified == 1}">开启</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        开启：用户在微信端下单时，必须进行实名认证后才可以操作。</br>
+        关闭：用户可以直接下单，不需要实名认证。
+    </div>
+
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="form-update" id="form-update" value="确定编辑"/>
+    </div>
+</form>
+
+<script src="../src/layui.js" th:src="@{/layui/layui.all.js}" ></script>
+<script>
+    ;!function(){
+        var form = layui.form
+            ,$ = layui.$;
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+
+        form.on('submit(form-update)', function(data){
+            $.ajax({
+                type: "post",
+                data: $("form").serialize(),
+                url: "[[@{/}]]"+"pc/client/updateVerified.form",
+                success: function(result){
+                    if(result > 0){//数据提交成功,关闭layer
+                        parent.layui.table.reload('table'); //重载表格
+                        parent.layer.close(index); //再执行关闭
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+            return false;
+        });
+    }();
+</script>
+</body>
+</html>

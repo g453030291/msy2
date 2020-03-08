@@ -11,20 +11,22 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
  * 用户控制层
  */
 @Controller
+@RequestMapping("/pc/client")
 public class ClientController {
 
 	@Autowired
 	private ClientService clientService;
 
 	@RequestMapping("/toClientList.page")
-	public String toUserListPage(){
-		return "/clientList";
+	public String toUserListPage(HttpServletRequest request){
+		return "pc/client/clientList";
 	}
 
 	@ResponseBody
@@ -43,7 +45,6 @@ public class ClientController {
 
 	@RequestMapping("/toAddClient.page")
 	public String toAddClient(String clientId, Model model){
-		System.out.println(clientId);
 		Client client = null;
 		if(!StringUtils.isEmpty(clientId)){
 			client = clientService.selectClient(clientId);
@@ -51,13 +52,13 @@ public class ClientController {
 			client = new Client();
 		}
 		model.addAttribute("client",client);
-		return "/addEditClient";
+		return "pc/client/addEditClient";
 	}
 
-	@RequestMapping("/toEditClient.page")
-	public String toEditClient(Integer id){
-		return "";
-	}
+//	@RequestMapping("/toEditClient.page")
+//	public String toEditClient(Integer id){
+//		return "";
+//	}
 
 	@ResponseBody
 	@RequestMapping("/updateClient.form")
@@ -70,7 +71,6 @@ public class ClientController {
 	@RequestMapping("/addClient.form")
 	public String addClient(Client client){
 		Integer count = clientService.addClient(client);
-		System.out.println(client.getId()+"-----------------");
 		return count.toString();
 	}
 
@@ -79,5 +79,19 @@ public class ClientController {
 	public List<Client> searchClientByNickName(String nick_name){
 		List<Client> clients = clientService.searchClientByNickName(nick_name);
 		return clients;
+	}
+
+	@RequestMapping("/toVerified.page")
+	public String toVerified(Model model){
+		Integer verified = clientService.findVerifiedState();
+		model.addAttribute("verified",verified);
+		return "pc/client/verified";
+	}
+
+	@ResponseBody
+	@RequestMapping("/updateVerified.form")
+	public String updateVerified(Integer verified){
+		Integer count = clientService.updateVerified(verified);
+		return count.toString();
 	}
 }

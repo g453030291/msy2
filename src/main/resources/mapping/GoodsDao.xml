@@ -33,4 +33,49 @@
 		</where>
 	</select>
 
+	<select id="listGoodsByGoodsDTO2" parameterType="com.msy.entity.wx.WxPageUtil" resultType="com.msy.entity.GoodsDTO3" useCache="false">
+		select * from goods
+		<where>
+			<if test="data.oilTypeVal != null and data.oilTypeVal != '' and data.oilTypeVal != '请选择'">
+				oil_type = #{data.oil_type}
+			</if>
+			<if test="data.brandVal != null and data.brandVal != '' and data.brandVal != '请选择'">
+				and brand_name = #{data.brandVal}
+			</if>
+			<if test="data.oilLevelVal != null and data.oilLevelVal != '' and data.oilLevelVal != '请选择'">
+				and level_name = #{data.oilLevelVal}
+			</if>
+			<if test="data.guigeVal != null and data.guigeVal != '' and data.guigeVal != '请选择'">
+				and guige_name = #{data.guigeVal}
+			</if>
+				and state = '上架' limit ${num},${size}
+		</where>
+	</select>
+
+	<select id="countGoodsByGoodsDTO2" parameterType="com.msy.entity.wx.WxPageUtil" resultType="java.lang.Integer" useCache="false">
+		select count(*) from goods
+		<where>
+			<if test="data.oilTypeVal != null and data.oilTypeVal != '' and data.oilTypeVal != '请选择'">
+				oil_type = #{data.oil_type}
+			</if>
+			<if test="data.brandVal != null and data.brandVal != '' and data.brandVal != '请选择'">
+				and brand_name = #{data.brandVal}
+			</if>
+			<if test="data.oilLevelVal != null and data.oilLevelVal != '' and data.oilLevelVal != '请选择'">
+				and level_name = #{data.oilLevelVal}
+			</if>
+			<if test="data.guigeVal != null and data.guigeVal != '' and data.guigeVal != '请选择'">
+				and guige_name = #{data.guigeVal}
+			</if>
+			 and state = '上架'
+		</where>
+	</select>
+
+	<select id="cartGoodsByIds" parameterType="java.util.List" resultType="com.msy.entity.Goods">
+		select * from goods where id in
+		<foreach collection="list" open="(" close=")" item="item" separator=",">
+			#{item.goods_id}
+		</foreach>
+	</select>
+
 </mapper>

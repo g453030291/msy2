@@ -2,88 +2,177 @@
 <html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
     <title>购物车</title>
     <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.0.1/weui.min.css">
+    <link rel="stylesheet" th:href="@{/mescroll/mescroll.min.css}">
+    <link rel="stylesheet" th:href="@{/mescroll/mescroll-option.css}">
 </head>
 <body ontouchstart="">
-
-    <div class="weui-panel weui-panel_access" style="margin-top: 4%;margin-bottom: 4%">
-        <div class="weui-panel__bd">
-            <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-                <div class="weui-media-box__hd">
-                    <img class="weui-media-box__thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAMAAAAOusbgAAAAeFBMVEUAwAD///+U5ZTc9twOww7G8MYwzDCH4YcfyR9x23Hw+/DY9dhm2WZG0kbT9NP0/PTL8sux7LFe115T1VM+zz7i+OIXxhes6qxr2mvA8MCe6J6M4oz6/frr+us5zjn2/fa67rqB4IF13XWn6ad83nxa1loqyirn+eccHxx4AAAC/klEQVRo3u2W2ZKiQBBF8wpCNSCyLwri7v//4bRIFVXoTBBB+DAReV5sG6lTXDITiGEYhmEYhmEYhmEYhmEY5v9i5fsZGRx9PyGDne8f6K9cfd+mKXe1yNG/0CcqYE86AkBMBh66f20deBc7wA/1WFiTwvSEpBMA2JJOBsSLxe/4QEEaJRrASP8EVF8Q74GbmevKg0saa0B8QbwBdjRyADYxIhqxAZ++IKYtciPXLQVG+imw+oo4Bu56rjEJ4GYsvPmKOAB+xlz7L5aevqUXuePWVhvWJ4eWiwUQ67mK51qPj4dFDMlRLBZTqF3SDvmr4BwtkECu5gHWPkmDfQh02WLxXuvbvC8ku8F57GsI5e0CmUwLz1kq3kD17R1In5816rGvQ5VMk5FEtIiWislTffuDpl/k/PzscdQsv8r9qWq4LRWX6tQYtTxvI3XyrwdyQxChXioOngH3dLgOFjk0all56XRi/wDFQrGQU3Os5t0wJu1GNtNKHdPqYaGYQuRDfbfDf26AGLYSyGS3ZAK4S8XuoAlxGSdYMKwqZKM9XJMtyqXi7HX/CiAZS6d8bSVUz5J36mEMFDTlAFQzxOT1dzLRljjB6+++ejFqka+mXIe6F59mw22OuOw1F4T6lg/9VjL1rLDoI9Xzl1MSYDNHnPQnt3D1EE7PrXjye/3pVpr1Z45hMUdcACc5NVQI0bOdS1WA0wuz73e7/5TNqBPhQXPEFGJNV2zNqWI7QKBd2Gn6AiBko02zuAOXeWIXjV0jNqdKegaE/kJQ6Bfs4aju04lMLkA2T5wBSYPKDGF3RKhFYEa6A1L1LG2yacmsaZ6YPOSAMKNsO+N5dNTfkc5Aqe26uxHpx7ZirvgCwJpWq/lmX1hA7LyabQ34tt5RiJKXSwQ+0KU0V5xg+hZrd4Bn1n4EID+WkQdgLfRNtvil9SPfwy+WQ7PFBWQz6dGWZBLkeJFXZGCfLUjCgGgqXo5TuSu3cugdcTv/HjqnBTEMwzAMwzAMwzAMwzAMw/zf/AFbXiOA6frlMAAAAABJRU5ErkJggg==" alt="">
+    <div id="mescroll" class="mescroll">
+        <div>
+            <div class="container" id="container">
+                <div class="page">
+                    <div class="page__hd">
+                    </div>
+                    <div class="page__bd">
+                    </div>
+                    <div class="page__ft" id="ft" style="margin-bottom: 4%">
+                    </div>
                 </div>
-                <div class="weui-media-box__bd">
-                    <h4 class="weui-media-box__title">SG15W-40 天津日石 <span style="color: red;float:right">¥180</span></h4>
-                    <p class="weui-media-box__desc">规&nbsp;&nbsp;&nbsp;&nbsp;格
-                        <span th:id="guige" style="padding-left:32%">4L*6桶/箱</span>
-                    </p>
-                    <p class="weui-media-box__desc">数&nbsp;&nbsp;&nbsp;&nbsp;量
-                        <input class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入购买数量" style="width: 80%;text-align: center;color: rgba(0,0,0,.3)"/>
-                    </p>
-                </div>
-            </a>
-        </div>
-        <div class="weui-panel__ft">
-            <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link" style="padding: 8px">
-                <div class="weui-cell__bd" style="text-align: center">删除</div>
-            </a>
+            </div>
         </div>
     </div>
-
-    <div class="weui-panel weui-panel_access" style="margin-top: 4%;margin-bottom: 4%">
-        <div class="weui-panel__bd">
-            <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-                <div class="weui-media-box__hd">
-                    <img class="weui-media-box__thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAMAAAAOusbgAAAAeFBMVEUAwAD///+U5ZTc9twOww7G8MYwzDCH4YcfyR9x23Hw+/DY9dhm2WZG0kbT9NP0/PTL8sux7LFe115T1VM+zz7i+OIXxhes6qxr2mvA8MCe6J6M4oz6/frr+us5zjn2/fa67rqB4IF13XWn6ad83nxa1loqyirn+eccHxx4AAAC/klEQVRo3u2W2ZKiQBBF8wpCNSCyLwri7v//4bRIFVXoTBBB+DAReV5sG6lTXDITiGEYhmEYhmEYhmEYhmEY5v9i5fsZGRx9PyGDne8f6K9cfd+mKXe1yNG/0CcqYE86AkBMBh66f20deBc7wA/1WFiTwvSEpBMA2JJOBsSLxe/4QEEaJRrASP8EVF8Q74GbmevKg0saa0B8QbwBdjRyADYxIhqxAZ++IKYtciPXLQVG+imw+oo4Bu56rjEJ4GYsvPmKOAB+xlz7L5aevqUXuePWVhvWJ4eWiwUQ67mK51qPj4dFDMlRLBZTqF3SDvmr4BwtkECu5gHWPkmDfQh02WLxXuvbvC8ku8F57GsI5e0CmUwLz1kq3kD17R1In5816rGvQ5VMk5FEtIiWislTffuDpl/k/PzscdQsv8r9qWq4LRWX6tQYtTxvI3XyrwdyQxChXioOngH3dLgOFjk0all56XRi/wDFQrGQU3Os5t0wJu1GNtNKHdPqYaGYQuRDfbfDf26AGLYSyGS3ZAK4S8XuoAlxGSdYMKwqZKM9XJMtyqXi7HX/CiAZS6d8bSVUz5J36mEMFDTlAFQzxOT1dzLRljjB6+++ejFqka+mXIe6F59mw22OuOw1F4T6lg/9VjL1rLDoI9Xzl1MSYDNHnPQnt3D1EE7PrXjye/3pVpr1Z45hMUdcACc5NVQI0bOdS1WA0wuz73e7/5TNqBPhQXPEFGJNV2zNqWI7QKBd2Gn6AiBko02zuAOXeWIXjV0jNqdKegaE/kJQ6Bfs4aju04lMLkA2T5wBSYPKDGF3RKhFYEa6A1L1LG2yacmsaZ6YPOSAMKNsO+N5dNTfkc5Aqe26uxHpx7ZirvgCwJpWq/lmX1hA7LyabQ34tt5RiJKXSwQ+0KU0V5xg+hZrd4Bn1n4EID+WkQdgLfRNtvil9SPfwy+WQ7PFBWQz6dGWZBLkeJFXZGCfLUjCgGgqXo5TuSu3cugdcTv/HjqnBTEMwzAMwzAMwzAMwzAMw/zf/AFbXiOA6frlMAAAAABJRU5ErkJggg==" alt="">
-                </div>
-                <div class="weui-media-box__bd">
-                    <h4 class="weui-media-box__title">SG15W-40 天津日石 <span style="color: red;float:right">¥180</span></h4>
-                    <p class="weui-media-box__desc">规&nbsp;&nbsp;&nbsp;&nbsp;格
-                        <span th:id="guige" style="padding-left:32%">4L*6桶/箱</span>
-                    </p>
-                    <p class="weui-media-box__desc">数&nbsp;&nbsp;&nbsp;&nbsp;量
-                        <input class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入购买数量" style="width: 80%;text-align: center;color: rgba(0,0,0,.3)"/>
-                    </p>
-                </div>
-            </a>
-        </div>
-        <div class="weui-panel__ft">
-            <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link" style="padding: 8px">
-                <div class="weui-cell__bd" style="text-align: center">删除</div>
-            </a>
-        </div>
-    </div>
-
-    <div class="button-sp-area">
-        <a href="javascript:;" class="weui-btn weui-btn_block weui-btn_primary">确认下单</a>
-    </div>
-
-
 <script type="text/javascript" th:src="@{/jquery/jquery-3.4.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/mescroll/mescroll.min.js}"></script>
+<script type="text/javascript" th:src="@{/mescroll/mescroll-option.js}"></script>
 <script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.2.1/weui.min.js"></script>
-<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
-<script type="text/javascript" class="picker js_show">
-
-    $('#guige').on('click', function () {
-        weui.picker([{
-            label: '4L*6桶/箱',
-            value: 0
-        }, {
-            label: '4L/桶',
-            value: 1
-        }], {
-            onChange: function (result) {
-                console.log(result);
+<script type="text/javascript">
+    var totalSize = 0;
+    var nowSize = 0;
+    $(function() {
+        //创建MeScroll对象
+        var mescroll = initMeScroll("mescroll", {
+            down: {
+                auto: false,//是否在初始化完毕之后自动执行下拉回调callback; 默认true
+                callback: downCallback, //下拉刷新的回调
             },
-            onConfirm: function (result) {
-                console.log(result);
-            },
-            title: '选择商品规格'
+            up: {
+                auto: true,//初始化完毕,是否自动触发上拉加载的回调
+                isBoth: false, //上拉加载时,如果滑动到列表顶部是否可以同时触发下拉刷新;默认false,两者不可同时触发; 这里为了演示改为true,不必等列表加载完毕才可下拉;
+                isBounce: false, //此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
+                callback: upCallback, //上拉加载的回调
+                page: {
+                    num: 0, //当前页 默认0,回调之前会加1; 即callback(page)会从1开始
+                    size: 5 //每页数据条数,默认10
+                },
+                noMoreSize: 5
+            }
         });
+
+        /*下拉刷新的回调 */
+        function downCallback() {
+            //下拉回调函数
+            window.location.reload();
+        }
+
+        /*上拉加载的回调 page = {num:1, size:10}; num:当前页 从1开始, size:每页数据条数 */
+        function upCallback(page) {
+            //联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+            //mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
+            //console.log("page.num=" + page.num + ", page.size=" + page.size);
+            getCartGoodsList(page.num,page.size);
+            mescroll.endBySize(page.size, totalSize);
+        }
     });
 
+    function getCartGoodsList(num,size){
+        $.ajax({
+            type: "get",
+            data: {
+                num: num,
+                size: size
+            },
+            async: false,
+            url: "[[@{/}]]" + "wx/getCartGoods.json",
+            success: function (result) {
+                if(result == null || result == ""){
+                    return;
+                }
+                var html = "";
+                for (var i = 0; i < result.data.length; i++) {
+                    html += "<div class=\"weui-panel weui-panel_access\" style=\"margin-top: 4%;margin-bottom: 4%\">\n" +
+                        "        <div class=\"weui-panel__bd\">\n" +
+                        "            <a href=\"javascript:void(0);\" class=\"weui-media-box weui-media-box_appmsg\">\n" +
+                        "                <div class=\"weui-media-box__hd\">\n" +
+                        "                    <img class=\"weui-media-box__thumb\" src=" + result.data[i].img1 + " alt=\"\">\n" +
+                        "                </div>\n" +
+                        "                <div class=\"weui-media-box__bd\">\n" +
+                        "                    <h4 class=\"weui-media-box__title\">" + result.data[i].goods_name + " " + result.data[i].brand_name + " <span style=\"color: red;float:right\">¥" + result.data[i].price + "</span></h4>\n" +
+                        "                    <p class=\"weui-media-box__desc\">规&nbsp;&nbsp;&nbsp;&nbsp;格\n" +
+                        "                        <span id=\"guige\" style=\"padding-left:32%\">" + result.data[i].guige_name + "</span>\n" +
+                        "                    </p>\n" +
+                        "                    <p class=\"weui-media-box__desc\">数&nbsp;&nbsp;&nbsp;&nbsp;量\n" +
+                        "                        <span id=\"guige\" style=\"padding-left:32%\">" + result.data[i].num + "</span>\n" +
+                        "                    </p>\n" +
+                        "                </div>\n" +
+                        "            </a>\n" +
+                        "        </div>\n" +
+                        "        <div class=\"weui-panel__ft\">\n" +
+                        "            <a href=\"javascript:deleteCart(" + result.data[i].id + ");\" class=\"weui-cell weui-cell_access weui-cell_link\" style=\"padding: 8px\">\n" +
+                        "                <div class=\"weui-cell__bd\" style=\"text-align: center\">删除</div>\n" +
+                        "            </a>\n" +
+                        "        </div>\n" +
+                        "    </div>";
+                }
+                nowSize = nowSize + result.data.length;
+                totalSize = result.totalSize;
+                if(nowSize == totalSize && nowSize != 0){
+                    html += "<div class=\"button-sp-area\">\n" +
+                        "        <a href=\"javascript:addOrder();\" class=\"weui-btn weui-btn_block weui-btn_primary\">确认下单</a>\n" +
+                        "    </div>";
+                }
+                $("#ft").append(html);
+            },
+            error: function (result) {
+                console.log(result);
+                //联网失败的回调,隐藏下拉刷新和上拉加载的状态
+                mescroll.endErr();
+            }
+        });
+    }
+
+    function deleteCart(id) {
+        weui.confirm('是否删除该油品?',
+            function(){
+                $.ajax({
+                    type: "post",
+                    data: {
+                        id: id
+                    },
+                    async: false,
+                    url: "[[@{/}]]" + "wx/deleteCart.json",
+                    success: function (result) {
+                        if(result){
+                            weui.toast('操作成功', 3000);
+                            setTimeout(function(){ window.location.reload(); }, 2000);
+                        }else {
+                            weui.alert("网络错误!");
+                        }
+                    },
+                    error: function (result) {
+                        weui.alert("网络错误!");
+                    }
+                });
+            },
+            function(){ console.log('no') });
+    }
+
+    function addOrder() {
+        weui.confirm('是否确认下单?',
+            function(){
+                setTimeout(function () {
+                    $.ajax({
+                        type: "post",
+                        data: null,
+                        async: false,
+                        url: "[[@{/}]]" + "wx/addOrder.json",
+                        success: function (result) {
+                            if(result == "下单成功"){
+                                weui.toast('操作成功', 3000);
+                                setTimeout(function(){ window.location.reload(); }, 3000);
+                            }else {
+                                weui.alert(result);
+                            }
+                        },
+                        error: function (result) {
+                            weui.alert("网络错误!");
+                        }
+                    });
+                },340);
+            },
+            function(){ console.log('no') });
+    }
 </script>
 </body>
 </html>

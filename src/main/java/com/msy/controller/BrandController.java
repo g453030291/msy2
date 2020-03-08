@@ -67,10 +67,15 @@ public class BrandController {
 		return count.toString();
 	}
 
+	/**
+	 * 将商品表中某个品牌的商品全部下架
+	 * @param id
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping("/delGuige.json")
-	public int delGuige(String id){
-		return brandService.delGuige(id);
+	@RequestMapping("/brandDown.json")
+	public int brandDown(String id){
+		return brandService.brandDown(id);
 	}
 
 }

@@ -1,13 +1,14 @@
 package com.msy.dao;
 
-import com.msy.entity.Goods;
-import com.msy.entity.TableModel;
+import com.msy.entity.*;
+import com.msy.entity.wx.WxPageUtil;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -45,4 +46,21 @@ public interface GoodsDao {
 
 	@Select("select * from goods where brand_name = #{0} and level_name = #{1} and model_name = #{2} and guige_name = #{3}")
 	Goods findGoodsByblmg(String brand_name, String level_name, String model_name, String guige_name);
+
+	/***************************微信端*********************************************/
+
+	@Select("select * from goods where oil_type = #{0} and state = '上架' group by brand_name")
+	List<Goods> listGoodsByOilType(String oilType);
+
+	@Select("select * from goods where oil_type = #{0} and brand_name = #{1} group by level_name")
+	List<Goods> getLevelByOilTypeAndBrand(String oilType, String brandVal);
+
+	@Select("select * from goods where oil_type = #{0} and brand_name = #{1} and level_name = #{2} group by guige_name")
+	List<Goods> getLevelByOilTypeAndBrandAndLevel(String oilType, String brandVal, String oilLevelVal);
+
+	List<GoodsDTO3> listGoodsByGoodsDTO2(WxPageUtil wxPageUtil);
+
+	Integer countGoodsByGoodsDTO2(WxPageUtil wxPageUtil);
+
+	List<Goods> cartGoodsByIds(List<Cart> carts);
 }

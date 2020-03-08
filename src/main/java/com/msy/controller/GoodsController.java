@@ -28,7 +28,7 @@ public class GoodsController {
 	public String toGoodsListPage(Model model){
 		List<Brand> brands = brandService.listAllBrand();
 		model.addAttribute("brands",brands);
-		return "/goodsList";
+		return "pc/goods/goodsList";
 	}
 
 	@ResponseBody

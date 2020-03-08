@@ -28,6 +28,16 @@
                     </select>
                 </div>
             </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">实名认证</label>
+                <div class="layui-input-inline">
+                    <select name="verified">
+                        <option value="已认证" th:selected="${client.verified == '已认证'}">已认证</option>
+                        <option value="未认证" th:selected="${client.verified == '未认证'}">未认证</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
         <div class="layui-form-item">
@@ -61,19 +71,20 @@
                 </div>
             </div>
 
-            <div class="layui-inline">
-                <label class="layui-form-label">用户级别</label>
-                <div class="layui-input-inline">
-                    <select name="level">
-                        <option value="1" th:selected="${client.level == '1'}">1</option>
-                        <option value="2" th:selected="${client.level == '2'}">2</option>
-                        <option value="3" th:selected="${client.level == '3'}">3</option>
-                    </select>
-                </div>
-            </div>
+            <!--<div class="layui-inline">-->
+                <!--<label class="layui-form-label">用户级别</label>-->
+                <!--<div class="layui-input-inline">-->
+                    <!--<select name="level">-->
+                        <!--<option value="1" th:selected="${client.level == '1'}">1</option>-->
+                        <!--<option value="2" th:selected="${client.level == '2'}">2</option>-->
+                        <!--<option value="3" th:selected="${client.level == '3'}">3</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+            <!--</div>-->
         </div>
 
         <div class="layui-form-item">
+            <input type="hidden" id="province-hidden" th:value="${client.province}">
             <div class="layui-inline">
                 <label class="layui-form-label">省份</label>
                 <div class="layui-input-inline">
@@ -83,6 +94,7 @@
                 </div>
             </div>
 
+            <input type="hidden" id="city-hidden" th:value="${client.city}">
             <div class="layui-inline">
                 <label class="layui-form-label">城市</label>
                 <div class="layui-input-inline">
@@ -92,12 +104,36 @@
                 </div>
             </div>
 
+            <input type="hidden" id="district-hidden" th:value="${client.district}">
             <div class="layui-inline">
                 <label class="layui-form-label">区/县</label>
                 <div class="layui-input-inline">
                     <select name="district" id="district" lay-filter="district">
 
                     </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">配送省份</label>
+                <div class="layui-input-inline">
+                    <input name="send_province" autocomplete="off" class="layui-input" th:value="${client.send_province}">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">配送城市</label>
+                <div class="layui-input-inline">
+                    <input name="send_city" autocomplete="off" class="layui-input" th:value="${client.send_city}">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">配送区/县</label>
+                <div class="layui-input-inline">
+                    <input name="send_district" autocomplete="off" class="layui-input" th:value="${client.send_district}">
                 </div>
             </div>
         </div>
@@ -117,6 +153,7 @@
             <img th:src="${client.img5}" alt="用户尚未上传" style="width: 20%;height: 15%"/>
         </div>
     </div>
+
     <div class="layui-form-item layui-hide">
         <input type="button" lay-submit lay-filter="form-add" id="form-add" value="确定添加"/>
         <input type="button" lay-submit lay-filter="form-update" id="form-update" value="确定编辑"/>
@@ -216,7 +253,7 @@
             $.ajax({
                 type: "post",
                 data: $("form").serialize(),
-                url: "[[@{/}]]"+"addClient.form",
+                url: "[[@{/}]]"+"pc/client/addClient.form",
                 success: function(result){
                     if(result > 0){//数据提交成功,关闭layer
                         //layer.msg("添加成功");
@@ -238,7 +275,7 @@
             $.ajax({
                 type: "post",
                 data: $("form").serialize(),
-                url: "[[@{/}]]"+"updateClient.form",
+                url: "[[@{/}]]"+"pc/client/updateClient.form",
                 success: function(result){
                     if(result > 0){//数据提交成功,关闭layer
                         parent.layui.table.reload('table'); //重载表格
